@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FunctionComponent, KeyboardEvent, useMemo } from 'react';
 
-import DEFAULTS from "../../app/defaults";
+import DEFAULTS from '../../app/defaults';
 
 import appStyles from '../../commons/styles/app.module.scss';
 import formatAmount from '../../commons/utils/format-amount';
@@ -9,16 +9,24 @@ type CurrencySelectionProps = {
   type: 'from' | 'to';
 }
 
-const handleAmountChange = (event: ChangeEvent<HTMLInputElement>): void => {
+const handleAmountChange = (
+  event: ChangeEvent<HTMLInputElement>,
+  type: CurrencySelectionProps['type'],
+): void => {
   const rawValue = event.currentTarget.value as string;
-  const value = rawValue.replace(/\./g, '').replace(/,/, '.');
+  const value = rawValue.trim().replace(/\./g, '').replace(/,/, '.').replace(/[+|-]/g, '');
   const hasDecimalsStarted = value[value.length - 1] === '.';
   const amount = parseFloat(value) as number;
 
-  if (Number.isNaN(amount)) return;
+  if (Number.isNaN(amount)) {
+    event.currentTarget.value = '';
+    return;
+  }
 
   const formattedAmount = formatAmount(amount);
-  event.currentTarget.value = `${formattedAmount}${hasDecimalsStarted ? ',' : ''}`;
+  const prefix = value ? `${DEFAULTS.APP.AMOUNT.SYMBOLS[type]} ` : '';
+  const suffix = hasDecimalsStarted ? ',' : '';
+  event.currentTarget.value = `${prefix}${formattedAmount}${suffix}`;
 }
 
 const handleAmountKeyPress = (
@@ -28,7 +36,7 @@ const handleAmountKeyPress = (
   const allowedKeysRegex = /[0-9]|,/;
 
   const amountValue = event.currentTarget.value;
-  const allowedValueRegex = /^[\d|.]+?(?=(,\d{0,1}$)|$)/;
+  const allowedValueRegex = /^[\d|.| |+|-]+?(?=(,\d{0,1}$)|$)/;
 
   if (
     (amountValue === '' && pressedKeyString === ',') ||
@@ -41,7 +49,7 @@ const handleAmountKeyPress = (
 }
 
 export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({ children, ...props }) => {
-  const isAmountFrom = useMemo(() => props.type === "from", [props.type]);
+  const isAmountFrom = useMemo(() => props.type === 'from', [props.type]);
 
   return (<section className={`${appStyles.row} currency-exchange-section currency-exchange-section--${props.type}`}>
     <form
@@ -56,14 +64,15 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({ c
       </select>
 
       <input
-        type='tel' // I know... it's mainly for mobile browsers :(
+        type='text'
+        inputMode='decimal'
         autoFocus={isAmountFrom}
         maxLength={Number.MAX_SAFE_INTEGER.toString().length}
         className={appStyles.amount}
         name='amount'
         placeholder='0'
         onPaste={(e) => e.preventDefault()}
-        onChange={handleAmountChange}
+        onChange={(e) => handleAmountChange(e, props.type)}
         onKeyPress={handleAmountKeyPress}
       />
     </form>

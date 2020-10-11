@@ -1,4 +1,4 @@
-import DEFAULTS from "../../app/defaults";
+import DEFAULTS from '../../app/defaults';
 
 const DEFAULTS_MAX_FRACTION_DIGITS = 2;
 const DEFAULTS_MIN_FRACTION_DIGITS = 0;

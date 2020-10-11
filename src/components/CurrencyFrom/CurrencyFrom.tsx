@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 //   selectCount,
 // } from './counterSlice';
 
-import { CurrencySelection } from "../CurrencySelection/CurrencySelection";
+import { CurrencySelection } from '../CurrencySelection/CurrencySelection';
 
 export function CurrencyFrom() {
   // const count = useSelector(selectCount);
@@ -17,6 +17,6 @@ export function CurrencyFrom() {
   // const [incrementAmount, setIncrementAmount] = useState('2');
 
   return (
-    <CurrencySelection type="from" />
+    <CurrencySelection type='from' />
   );
 }
