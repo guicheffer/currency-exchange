@@ -27,6 +27,9 @@
     "react-scripts": "3.4.3",
     "typescript": "3.8.2"
   },
+  "devDependencies": {
+    "node-sass": "4.14.1"
+  },
   "engineStrict": true,
   "engines": {
     "node": "14.*",

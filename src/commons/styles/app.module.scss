@@ -1,0 +1,43 @@
+@import './defaults/typography';
+
+.row {
+  align-items: center;
+  display: flex;
+  width: 100%;
+}
+
+.display {
+  display: flex;
+  flex-direction: row;
+  font-size: $font-size-big;
+  justify-content: space-between;
+  margin: 0 (2 * $base-design-unit);
+  width: 100%;
+}
+
+.displayTo {
+  margin-bottom: (10 * $base-design-unit);
+}
+
+.default-input-field {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-size: inherit;
+  outline: none;
+}
+
+.currency {
+  composes: default-input-field;
+
+  cursor: pointer;
+  margin-right: $base-design-unit;
+  width: 15vh;
+}
+
+.amount {
+  composes: default-input-field;
+
+  text-align: right;
+  width: 50%;
+}
