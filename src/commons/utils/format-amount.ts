@@ -1,9 +1,14 @@
 import DEFAULTS from '../../app/defaults';
 
+import {
+  AmountValueState,
+  CurrencySelectionType,
+} from '../../app/slices/currencies/currencies';
+
 const DEFAULTS_MAX_FRACTION_DIGITS = 2;
 const DEFAULTS_MIN_FRACTION_DIGITS = 0;
 
-export const formatAmount = (amount: number) => {
+const formatAmount = (amount: number) => {
   const rawFormattedAmount = amount.toLocaleString('en', {
     currency: DEFAULTS.APP.CURRENCY,
     maximumFractionDigits: DEFAULTS_MAX_FRACTION_DIGITS,
@@ -14,4 +19,16 @@ export const formatAmount = (amount: number) => {
   return rawFormattedAmount.replace(/,/g, '.').replace(/\.(\d{0,2})$/, `,$1`).replace(/€/, '')
 }
 
-export default formatAmount;
+export const maskAmount = ({ hasDecimalsStarted, value }: AmountValueState, type: CurrencySelectionType) => {
+  if (value === null || Number.isNaN(value)) return '';
+
+  const prefix = value ? `${DEFAULTS.APP.AMOUNT.SYMBOLS[type]} ` : '';
+  const suffix = hasDecimalsStarted ? ',' : '';
+  const formattedAmount = formatAmount(value);
+
+  return `${prefix}${formattedAmount}${suffix}`;
+}
+
+export const removeMask = (rawValue: string) => rawValue.trim().replace(/(\+|-|\.| )/g, '').replace(/,/, '.');
+
+export default { maskAmount, removeMask };

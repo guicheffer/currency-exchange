@@ -3,6 +3,7 @@
 .row {
   align-items: center;
   display: flex;
+  position: relative;
   width: 100%;
 }
 
@@ -19,16 +20,17 @@
   margin-bottom: (10 * $base-design-unit);
 }
 
-.default-input-field {
+.default-field {
   background: transparent;
   border: 0;
   color: inherit;
   font-size: inherit;
   outline: none;
+  user-select: none;
 }
 
 .currency {
-  composes: default-input-field;
+  composes: default-field;
 
   cursor: pointer;
   margin-right: $base-design-unit;
@@ -36,9 +38,35 @@
 }
 
 .amount {
-  composes: default-input-field;
+  composes: default-field;
 
   flex: 1;
   text-align: right;
   width: 50%;
+}
+
+.exchange {
+  composes: default-field;
+
+  background-color: var(--exchange-button-bg-color);
+  border-radius: 2 * $base-design-unit;
+  bottom: 10 * $base-design-unit;
+  cursor: pointer;
+  font-size: $font-size-mid;
+  left: 50%;
+  padding: (2 * $base-design-unit) 0;
+  position: absolute;
+  transform: translateX(-50%);
+  transition: background-color .1s linear, color .1s linear;
+  width: 50%;
+
+  &:hover {
+    background-color: var(--exchange-button-bg-color-hover);
+  }
+
+  &:disabled {
+    background-color: var(--exchange-button-bg-color-disabled);
+    color: var(--exchange-button-color-disabled);
+    cursor: default;
+  }
 }
