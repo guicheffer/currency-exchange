@@ -1,14 +1,10 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 
-// TODO: Remove it
-import counterReducer from '../components/Counter/counterSlice';
-
-import currenciesSlice from './slices/currencies/currencies';
+import amountsSlice from './slices/currencies/amounts';
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
-    currencies: currenciesSlice,
+    amounts: amountsSlice,
   },
 });
 

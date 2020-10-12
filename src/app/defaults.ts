@@ -1,6 +1,10 @@
 export default {
   APP: {
-    CURRENCY: 'EUR',
+    LOCALE_STRING: 'de-DE',
+
+    CURRENCY: {
+      ISO: 'EUR',
+    },
 
     AMOUNT: {
       SYMBOLS: {

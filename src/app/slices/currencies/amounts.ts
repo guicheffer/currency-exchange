@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { AppThunk, RootState } from '../../../app/store';
-
 export type CurrencySelectionType = 'from' | 'to';
 
 export type AmountValueState = {
@@ -9,15 +7,10 @@ export type AmountValueState = {
   value: null | number;
 }
 
-type CurrencySchema = {
+type AmountsState = {
   [key in CurrencySelectionType]: {
     amount: AmountValueState;
   };
-}
-
-interface CurrenciesState {
-  active: CurrencySelectionType;
-  currency: CurrencySchema;
 }
 
 const initialAmount = {
@@ -25,40 +18,30 @@ const initialAmount = {
   value: null,
 };
 
-const initialState: CurrenciesState = {
-  active: 'from',
-  currency: {
-    from: {
-      amount: initialAmount,
-    },
-    to: {
-      amount: initialAmount,
-    },
+const initialState: AmountsState = {
+  from: {
+    amount: initialAmount,
+  },
+  to: {
+    amount: initialAmount,
   },
 };
 
-export const currenciesSlice = createSlice({
-  name: 'currencies',
+export const amountsSlice = createSlice({
+  name: 'amounts',
   initialState,
   reducers: {
     setAmountFrom: (state, action: PayloadAction<AmountValueState>) => {
-      state.currency.from.amount = action.payload;
+      state.from.amount = action.payload;
     },
     setAmountTo: (state, action: PayloadAction<AmountValueState>) => {
-      state.currency.to.amount = action.payload;
+      state.to.amount = action.payload;
     },
-    // decrement: state => {
-    //   state.value -= 1;
-    // },
-    // // Use the PayloadAction type to declare the contents of `action.payload`
-    // incrementByAmount: (state, action: PayloadAction<number>) => {
-    //   state.value += action.payload;
-    // },
   },
 });
 
 
-export const { setAmountFrom, setAmountTo } = currenciesSlice.actions;
+export const { setAmountFrom, setAmountTo } = amountsSlice.actions;
 
 export const setAmountValue = {
   from: setAmountFrom,
@@ -69,7 +52,6 @@ export const setAmountValue = {
 // // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // // will call the thunk with the `dispatch` function as the first argument. Async
 // // code can then be executed and other actions can be dispatched
-// export const incrementAsync = (amount: number): AppThunk => dispatch => {
 //   setTimeout(() => {
 //     dispatch(incrementByAmount(amount));
 //   }, 1000);
@@ -77,7 +59,7 @@ export const setAmountValue = {
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state: RootState) => state.currencies.value)`
-// export const selectCount = (state: RootState) => state.currencies.value;
+// in the slice file. For example: `useSelector((state: RootState) => state.amounts.value)`
+// export const selectCount = (state: RootState) => state.amounts.value;
 
-export default currenciesSlice.reducer;
+export default amountsSlice.reducer;
