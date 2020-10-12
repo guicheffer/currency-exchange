@@ -1,0 +1,45 @@
+@import '../../commons/styles/defaults/design-system';
+@import '../../commons/styles/defaults/breakpoints';
+@import '../../commons/styles/defaults/typography';
+
+.row {
+  align-items: center;
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.display {
+  display: flex;
+  flex-direction: row;
+  font-size: $font-size-big;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 50%;
+
+  @media (max-width: $screen-sm-max) {
+    margin: 0 (2 * $base-design-unit);
+    width: 100%;
+  }
+}
+
+.display_to {
+  margin-bottom: (10 * $base-design-unit);
+}
+
+.currency {
+  @include default-field;
+
+  cursor: pointer;
+  margin-right: $base-design-unit;
+  width: 15vh;
+}
+
+.amount {
+  @include default-field;
+
+  cursor: default;
+  flex: 1;
+  text-align: right;
+  width: 50%;
+}

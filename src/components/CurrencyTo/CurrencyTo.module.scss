@@ -1,0 +1,28 @@
+@import '../../commons/styles/defaults/design-system';
+@import '../../commons/styles/defaults/typography';
+
+.exchange {
+  @include default-field;
+
+  background-color: var(--exchange-button-bg-color);
+  border-radius: 2 * $base-design-unit;
+  bottom: 10 * $base-design-unit;
+  cursor: pointer;
+  font-size: $font-size-mid;
+  left: 50%;
+  padding: (2 * $base-design-unit) 0;
+  position: absolute;
+  transform: translateX(-50%);
+  transition: background-color .1s linear, color .1s linear;
+  width: 50%;
+
+  &:hover {
+    background-color: var(--exchange-button-bg-color-hover);
+  }
+
+  &:disabled {
+    background-color: var(--exchange-button-bg-color-disabled);
+    color: var(--exchange-button-color-disabled);
+    cursor: default;
+  }
+}

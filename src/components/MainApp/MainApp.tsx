@@ -5,7 +5,7 @@ import { CurrencyTo } from '../CurrencyTo/CurrencyTo';
 
 function MainApp() {
   return (
-    <div className='MainApp'>
+    <div className='CurrencyExchangeMainApp'>
       <CurrencyFrom />
       <CurrencyTo />
     </div>

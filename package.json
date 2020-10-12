@@ -38,8 +38,7 @@
   "scripts": {
     "start": "$npm_package_var_runner start",
     "build": "$npm_package_var_runner build",
-    "test": "$npm_package_var_runner test",
-    "eject": "$npm_package_var_runner eject"
+    "test": "$npm_package_var_runner test"
   },
   "eslintConfig": {
     "extends": "react-app"

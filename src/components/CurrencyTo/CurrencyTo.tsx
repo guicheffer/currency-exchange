@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { CurrencySelection } from '../CurrencySelection/CurrencySelection';
-import appStyles from '../../commons/styles/app.module.scss';
+import styles from './CurrencyTo.module.scss';
 
 export function CurrencyTo() {
   return (
     <CurrencySelection type='to'>
       <button
         disabled
-        className={appStyles.exchange}
+        className={styles.exchange}
         type='submit'
       > Exchange </button>
     </CurrencySelection>

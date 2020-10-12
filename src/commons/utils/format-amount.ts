@@ -1,9 +1,9 @@
-import DEFAULTS from '../../app/defaults';
+import DEFAULTS from '../../app/defaults/defaults';
 
 import {
   AmountValueState,
   CurrencySelectionType,
-} from '../../app/slices/currencies/amounts';
+} from '../../app/slices/amounts';
 
 const DEFAULTS_MAX_FRACTION_DIGITS = 2;
 const DEFAULTS_MIN_FRACTION_DIGITS = 0;
