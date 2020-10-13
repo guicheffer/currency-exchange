@@ -1,6 +1,9 @@
 // Common colors
 $white: #FFF;
 $black: #000;
+$gray: #777;
+$light-gray: #c1c1c1;
 
 // Specific colors
-$_disabled-color: #777;
+$_disabled-color: $gray;
+$_secondary-color: $light-gray;

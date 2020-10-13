@@ -25,6 +25,7 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
   const activeFrom = useSelector(getExchangeIsoActiveFrom);
   const activeTo = useSelector(getExchangeIsoActiveTo);
 
+  // This will make a auto focus in case one of the currencies selection change
   useEffect(() => amountInput.current?.focus(), [activeFrom, activeTo]);
 
   const handleAmountChange = (event: SyntheticEvent<HTMLInputElement>): void => {

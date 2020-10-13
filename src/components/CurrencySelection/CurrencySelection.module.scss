@@ -1,5 +1,6 @@
 @import '../../commons/styles/defaults/design-system';
 @import '../../commons/styles/defaults/breakpoints';
+@import '../../commons/styles/defaults/colors';
 @import '../../commons/styles/defaults/typography';
 
 .row {
@@ -9,11 +10,7 @@
   width: 100%;
 }
 
-.display {
-  display: flex;
-  flex-direction: row;
-  font-size: $font-size-big;
-  justify-content: space-between;
+.container {
   margin: 0 auto;
   width: 50%;
 
@@ -23,8 +20,15 @@
   }
 }
 
-.display_to {
+.container__to {
   margin-bottom: (10 * $base-design-unit);
+}
+
+.selection {
+  display: flex;
+  flex-direction: row;
+  font-size: $font-size-big;
+  justify-content: space-between;
 }
 
 .currency {
@@ -42,4 +46,21 @@
   flex: 1;
   text-align: right;
   width: 50%;
+}
+
+.display {
+  color: $_secondary-color;
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semi;
+  justify-content: space-between;
+  padding: 0 ($base-design-unit / 1.5);
+  margin: 0 auto;
+  user-select: none;
+
+  @media (max-width: $screen-sm-min) {
+    width: 95%;
+  }
 }

@@ -8,6 +8,7 @@ import { getFromAmountValue, getToAmountValue } from '../../app/selectors/amount
 import { reverseCurrencies } from '../../app/slices/exchange';
 import DEFAULTS from '../../app/defaults/defaults';
 import styles from './CurrencySelection.module.scss';
+import { formatAmount } from '../../commons/utils/format-amount';
 
 interface CurrencySelectionProps {
   currency: CurrencySchema['iso'];
@@ -35,17 +36,26 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({ c
 
   return (
     <section className={`${styles.row} currency-exchange-section currency-exchange-section--${props.type}`}>
-      <form
-        autoComplete='off'
-        className={`${styles.display} ${!isAmountTypeFrom ? styles.display_to : ''}`}
-        onSubmit={e => e.preventDefault()}
-      >
-        <select value={props.currency} className={styles.currency} onChange={handleSelection}>
-          {Object.entries(DEFAULTS.APP.CURRENCIES).map(([currencyKey, { iso }]) => (<option key={currencyKey} value={iso}>{iso}</option>))}
-        </select>
+      <div className={`${styles.container} ${!isAmountTypeFrom ? styles.container__to : ''}`}>
+        <form
+          autoComplete='off'
+          className={styles.selection}
+          onSubmit={e => e.preventDefault()}
+        >
+          <select value={props.currency} className={styles.currency} onChange={handleSelection}>
+            {Object.entries(DEFAULTS.APP.CURRENCIES).map(([currencyKey, { iso }]) => (<option key={currencyKey} value={iso}>{iso}</option>))}
+          </select>
 
-        <AmountInput type={props.type} />
-      </form>
+          <AmountInput type={props.type} />
+        </form>
+
+        <section className={styles.display}>
+          <p className={styles.balance}>
+            {DEFAULTS.APP.TRANSLATIONS?.BALANCE}: {formatAmount(2000.4, props.currency)}
+          </p>
+          {isAmountTypeFrom && <p className={`${styles.advice}`}>eita</p>}
+        </section>
+      </div>
 
       {/* TODO: Remove it! */}
       <p style={{position: 'absolute', bottom: '0', right: '16px'}}> {props.currency} -  {currentAmount.value} </p>
