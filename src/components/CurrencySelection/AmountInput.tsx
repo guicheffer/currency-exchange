@@ -1,9 +1,18 @@
-import React, { FunctionComponent, KeyboardEvent, ReactElement, SyntheticEvent, useMemo } from 'react';
+import React, {
+  FunctionComponent,
+  KeyboardEvent,
+  ReactElement,
+  SyntheticEvent,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { CurrencySelectionType, setAmountValue } from '../../app/slices/amounts';
+import { getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../app/selectors/exchange';
+import { getFromAmountValue, getToAmountValue } from '../../app/selectors/amounts';
 import { maskAmountValue, removeMaskFromInputValue } from '../../commons/utils/format-amount';
-import { RootState } from '../../app/store';
 import DEFAULTS from '../../app/defaults/defaults';
 import styles from './CurrencySelection.module.scss';
 
@@ -11,7 +20,12 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
   const dispatch = useDispatch();
   const selectionType = props.type;
   const isAmountTypeFrom = useMemo(() => selectionType === 'from', [selectionType]);
-  const amountValue = useSelector((state: RootState) => state.amounts[props.type].amount);
+  const currentAmount = useSelector(isAmountTypeFrom ? getFromAmountValue : getToAmountValue);
+  const amountInput = useRef<HTMLInputElement>(null);
+  const activeFrom = useSelector(getExchangeIsoActiveFrom);
+  const activeTo = useSelector(getExchangeIsoActiveTo);
+
+  useEffect(() => amountInput.current?.focus(), [activeFrom, activeTo]);
 
   const handleAmountChange = (event: SyntheticEvent<HTMLInputElement>): void => {
     const inputValue = event.currentTarget.value;
@@ -32,12 +46,15 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
     const allowedKeysRegex = /\d|,/;
 
     /*
-     * The following condition will check, respectively:
+     * The following conditions will, respectively:
      *
-     * - If there's already an inserted comma
-     * - Validate if pressed key is actually a number
-     * - Disallow pressed key if value is already consistent with its format (e.g. 12.345,56)
-     * - Don't disallow 'delete' key when pressing it
+     * - check if there's already an inserted comma or;
+     * - check if pressed key is actually a number or:
+     *
+     * - check if there's a proper amount value and;
+     * - disallow pressed key if value is already consistent with its format (e.g. 12.345,56) and;
+     * - not disallow users from 'delete' key actions and;
+     * - check has not selecteded something in the field to get it replaced.
     */
     if (
       (amountValue === '' && pressedKeyString === ',') ||
@@ -45,13 +62,15 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
 
       (amountValue &&
       !permittedValueRegex.test(amountValue) &&
-      event.keyCode !== DEFAULTS.KEYCODES.DELETE)
+      event.keyCode !== DEFAULTS.KEYCODES.DELETE &&
+      !((event.currentTarget.selectionEnd as number) > (event.currentTarget.selectionStart as number)))
     ) return event.preventDefault();
   }
 
   return (
     <input
       type='text'
+      ref={isAmountTypeFrom ? amountInput : null}
       inputMode='decimal'
       autoFocus={isAmountTypeFrom}
       maxLength={Number.MAX_SAFE_INTEGER.toString().length}
@@ -60,7 +79,7 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
       onChange={handleAmountChange}
       onKeyPress={shouldAllowKeyPress}
       onPaste={e => e.preventDefault()}
-      value={maskAmountValue(amountValue, selectionType)}
+      value={maskAmountValue(currentAmount, selectionType)}
     />
   );
 }

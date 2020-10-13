@@ -1,8 +1,13 @@
+@import './breakpoints';
+
 @mixin default-field {
   background: transparent;
   border: 0;
   color: inherit;
   font-size: inherit;
   outline: none;
-  user-select: none;
+
+  @media (min-width: $screen-sm-min) {
+    user-select: none;
+  }
 }

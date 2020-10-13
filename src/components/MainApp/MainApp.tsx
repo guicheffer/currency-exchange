@@ -7,6 +7,7 @@ function MainApp() {
   return (
     <div className='CurrencyExchangeMainApp'>
       <CurrencyFrom />
+
       <CurrencyTo />
     </div>
   );

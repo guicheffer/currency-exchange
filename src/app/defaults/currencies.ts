@@ -3,11 +3,15 @@ export type CurrencySchema = {
   symbol: string;
 }
 
-export interface DefaultCurrenciesInterface {
-  [key: string]: CurrencySchema;
+export type DefaultCurrenciesInterface = {
+  [key in string]: CurrencySchema;
 }
 
 export default {
+  btc: {
+    iso: 'BTC',
+    symbol: '₿',
+  },
   eur: {
     iso: 'EUR',
     symbol: '€',
@@ -19,9 +23,5 @@ export default {
   usd: {
     iso: 'USD',
     symbol: '$',
-  },
-  btc: {
-    iso: 'BTC',
-    symbol: '₿',
   },
 } as DefaultCurrenciesInterface;

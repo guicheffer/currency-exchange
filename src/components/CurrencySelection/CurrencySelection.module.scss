@@ -18,7 +18,7 @@
   width: 50%;
 
   @media (max-width: $screen-sm-max) {
-    margin: 0 (2 * $base-design-unit);
+    margin: 0 $base-design-unit;
     width: 100%;
   }
 }
