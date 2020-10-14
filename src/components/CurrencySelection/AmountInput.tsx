@@ -7,50 +7,35 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AmountValueState, CurrencySelectionType, setAmountValue } from '../../store/amounts/amounts.slices';
+import { CurrencySelectionType, setAmountValue } from '../../store/amounts/amounts.slices';
 import { getBalanceExceeded } from '../../store/balances/balances.selectors';
-import { getConvertedRate } from '../../store/exchange/rates/rates.selectors';
+import { getCurrentRate } from '../../store/exchange/rates/rates.selectors';
 import { getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../store/exchange/exchange.selectors';
-import { getFromAmountValue, getToAmountValue } from '../../store/amounts/amounts.selectors';
+import { getFromAmountValue, getMinimumAmountToExchange, getToAmountValue } from '../../store/amounts/amounts.selectors';
 import { maskAmountValue, removeMaskFromInputValue } from '../../commons/utils/format-amount/format-amount';
-import { RootState } from '../../store/store';
 import DEFAULTS from '../../app/defaults';
 import hasCharInValuePosition from '../../commons/utils/has-char-in-value-position/has-char-in-value-position';
 import styles from './CurrencySelection.module.scss';
-
-const makeGetConvertedRate = () => getConvertedRate;
 
 // This is rendering every time since we have a mask here
 // which is updating its default value as reference;
 export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ type }): ReactElement => {
   const dispatch = useDispatch();
-  const isAmountTypeFrom = useMemo(() => type === 'from', [type]);
-  const inputAmount = useSelector(isAmountTypeFrom ? getFromAmountValue : getToAmountValue);
   const amountInput = useRef<HTMLInputElement>(null);
-  const activeFrom = useSelector(getExchangeIsoActiveFrom);
-  const activeTo = useSelector(getExchangeIsoActiveTo);
+
+  const isAmountTypeFrom = useMemo(() => type === 'from', [type]);
+  const currencyOrigin = useSelector(getExchangeIsoActiveFrom);
+  const currencyConvert = useSelector(getExchangeIsoActiveTo);
+  const currentAmount = useSelector(isAmountTypeFrom ? getFromAmountValue : getToAmountValue);
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
-
-  const selectConvertedRate = useMemo(makeGetConvertedRate, []);
-  const convertedRate = useSelector((state: RootState) => selectConvertedRate(state, type));
-
-  // TODO: Think about a nice solution to control converted rate stateless 👇🏼
-  const [isInteracting, setIsInteracting] = useState(false);
-  const currentAmount: AmountValueState = isInteracting ? inputAmount : convertedRate.value ? convertedRate : inputAmount;
+  const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
+  const currentRate = useSelector(getCurrentRate);
 
   // This will make a auto focus in case one of the currencies selection change
-  useEffect(() => amountInput.current?.focus(), [activeFrom, activeTo]);
-
-  // This will control user's interaction in order to trigger (or not) the conversion rate
-  const handleBlur = useCallback(() => setIsInteracting(false), []);
-  const handleFocus = useCallback(() => {
-    if (convertedRate?.value) dispatch(setAmountValue[type](convertedRate));
-    setIsInteracting(true);
-  }, [dispatch, type, convertedRate]);
+  useEffect(() => amountInput.current?.focus(), [currencyOrigin, currencyConvert]);
 
   const handleAmountChange = useCallback((event: SyntheticEvent<HTMLInputElement>): void => {
     const inputValue = event.currentTarget.value;
@@ -61,11 +46,14 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
     const hasZeroAfterComma = hasCharInValuePosition(inputValue, ',', 2) && hasCharInValuePosition(inputValue, '0', 1);
 
     dispatch(setAmountValue[type]({
-      hasDecimalsStarted,
-      hasZeroAfterComma,
-      value,
+      amount: {
+        hasDecimalsStarted,
+        hasZeroAfterComma,
+        value,
+      },
+      currentRate,
     }));
-  }, [dispatch, type]);
+  }, [dispatch, type, currentRate]);
 
   const shouldAllowKeyPress = useCallback((
     event: KeyboardEvent<HTMLInputElement>,
@@ -106,10 +94,8 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
         inputMode='decimal'
         autoFocus={isAmountTypeFrom}
         maxLength={Number.MAX_SAFE_INTEGER.toString().length}
-        className={`${styles.amount} ${isAmountTypeFrom && !!hasBalanceExceeded ? styles.amount__balanceExceeded : ''}`}
+        className={`${styles.amount} ${isAmountTypeFrom && (hasBalanceExceeded || !hasMinimumAmount) ? styles.amount__balanceExceeded : ''}`}
         placeholder='0'
-        onFocus={handleFocus}
-        onBlur={handleBlur}
         onChange={handleAmountChange}
         onKeyPress={shouldAllowKeyPress}
         onPaste={e => e.preventDefault()}

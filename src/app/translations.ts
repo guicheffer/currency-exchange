@@ -3,7 +3,9 @@ export type DefaultTranslationsInterface = {
 }
 
 export default {
-  BALANCE: 'Balance',
-  EXCHANGE_ACTION: 'Exchange',
   BALANCE_EXCEEDED: 'exceeds balance',
+  BALANCE: 'Balance',
+  CONFIRM_EXCHANGE: 'Do you confirm the exchange?',
+  EXCHANGE_ACTION: 'Exchange',
+  MINIMUM_EXPECTED: 'minimum amount is',
 } as DefaultTranslationsInterface;

@@ -6,6 +6,7 @@ import { CurrencySchema } from '../../app/currencies';
 import { CurrencySelectionType } from '../../store/amounts/amounts.slices';
 import { formatAmount } from '../../commons/utils/format-amount/format-amount';
 import { getBalanceExceeded, getCurrencyBalance } from '../../store/balances/balances.selectors';
+import { getMinimumAmountToExchange } from '../../store/amounts/amounts.selectors';
 import { reverseCurrencies } from '../../store/exchange/exchange.slices';
 import { RootState } from '../../store/store';
 import DEFAULTS from '../../app/defaults';
@@ -32,6 +33,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
   const selectCurrencyBalance = useMemo(makeGetCurrencyBalance, []);
   const currencyBalance = useSelector((state: RootState) => selectCurrencyBalance(state, currencyOrigin));
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
+  const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
 
   const handleSelection = (event: React.SyntheticEvent<HTMLSelectElement>) => {
     const selectedIso = event.currentTarget.value;
@@ -66,10 +68,13 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
           </p>
 
           {
-            isSelectionTypeFrom &&
-            <p className={`${styles.advice}`}>
-              {/* Add 0.10 minimum validation (based on default currencies minimum value) */}
-              {hasBalanceExceeded && DEFAULTS.APP.TRANSLATIONS?.BALANCE_EXCEEDED}
+            isSelectionTypeFrom && hasBalanceExceeded && <p> {DEFAULTS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
+          }
+
+          {
+            isSelectionTypeFrom && !hasMinimumAmount &&
+            <p className={`${styles.warning}`}>
+              {DEFAULTS.APP.TRANSLATIONS?.MINIMUM_EXPECTED} {formatAmount(DEFAULTS.APP.CURRENCIES[currencyOrigin.toLowerCase()].minimum, currencyOrigin)}
             </p>
           }
         </section>
