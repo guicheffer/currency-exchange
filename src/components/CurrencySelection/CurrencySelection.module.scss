@@ -66,3 +66,32 @@
 }
 
 .warning { color: $red; }
+
+/* balance animation */
+$_default_time: 3s;
+
+@keyframes normalBalanceDisplay {
+  0% { color: $green; }
+  100% { color: inherit; }
+}
+
+@keyframes normalBalanceDisplaySymbol {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.balance {
+  color: inherit;
+  position: relative;
+  transition: color .2s ease-out;
+}
+.balanceJustExchanged {
+  animation: normalBalanceDisplay $_default_time ease-out;
+
+  &::after {
+    animation: normalBalanceDisplaySymbol $_default_time ease-out;
+    content: '+';
+    position: absolute;
+    left: ((2 * -1) * $base-design-unit);
+  }
+}

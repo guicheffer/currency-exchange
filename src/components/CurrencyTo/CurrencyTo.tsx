@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { decrementBalance, incrementBalance } from '../../store/balances/balances.slices';
@@ -17,6 +17,8 @@ const makeGetToAmountValue = () => getToAmountValue;
 export function CurrencyTo() {
   const dispatch = useDispatch();
 
+  const [justExchanged, setJustExchanged] = useState(false);
+
   const currencyOrigin = useSelector(getExchangeIsoActiveTo);
   const currencyConvert = useSelector(getExchangeIsoActiveFrom);
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
@@ -30,6 +32,7 @@ export function CurrencyTo() {
 
   const handleExchangeAction = useCallback(() => {
     if (!window.confirm(DEFAULTS.APP.TRANSLATIONS?.CONFIRM_EXCHANGE)) return false;
+    setJustExchanged(true);
 
     dispatch(decrementBalance({
       currency: currencyConvert,
@@ -43,6 +46,10 @@ export function CurrencyTo() {
 
     dispatch(setAmountValue['from']({ amount: { value: null } }));
     dispatch(setAmountValue['to']({ amount: { value: null } }));
+
+    setTimeout(() => {
+      setJustExchanged(false);
+    }, DEFAULTS.APP.TIMEOUT_JUST_EXCHANGED);
   }, [currencyConvert, currencyOrigin, dispatch, fromAmountValue, toAmountValue]);
 
   return (
@@ -51,6 +58,7 @@ export function CurrencyTo() {
       currencyOrigin={currencyOrigin}
       currencyConvert={currencyConvert}
       setActive={setActiveTo}
+      justExchanged={justExchanged}
     >
       <button
         type='submit'

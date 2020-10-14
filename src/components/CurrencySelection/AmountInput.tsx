@@ -53,7 +53,7 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
       },
       currentRate,
     }));
-  }, [dispatch, type, currentRate]);
+  }, [currentRate, dispatch, type]);
 
   const shouldAllowKeyPress = useCallback((
     event: KeyboardEvent<HTMLInputElement>,

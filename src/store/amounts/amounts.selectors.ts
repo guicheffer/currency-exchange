@@ -1,7 +1,7 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-import { getExchangeIsoActiveFrom } from "../exchange/exchange.selectors";
-import { RootState } from "../store";
+import { getExchangeIsoActiveFrom } from '../exchange/exchange.selectors';
+import { RootState } from '../store';
 import DEFAULTS from '../../app/defaults';
 
 export const getFromAmountValue = createSelector(

@@ -1,6 +1,6 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-import { RootState } from "../store";
+import { RootState } from '../store';
 
 export const getExchangeIsoActiveFrom = createSelector(
   (state: RootState) => state,

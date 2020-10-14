@@ -1,4 +1,4 @@
-import { CurrencySelectionType } from "../store/amounts/amounts.slices";
+import { CurrencySelectionType } from '../store/amounts/amounts.slices';
 import CURRENCIES, { DefaultCurrenciesInterface, CurrencySchema } from './currencies';
 import TRANSLATIONS, { DefaultTranslationsInterface } from './translations';
 
@@ -15,6 +15,7 @@ interface DefaultsInterface {
         [key in CurrencySelectionType]: string;
       },
     },
+    TIMEOUT_JUST_EXCHANGED: number,
   },
   KEYCODES: {
     [key: string]: number,
@@ -36,6 +37,7 @@ export default {
         to: '+',
       },
     },
+    TIMEOUT_JUST_EXCHANGED: 3000,
   },
   KEYCODES: {
     DELETE: 8,

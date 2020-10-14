@@ -1,7 +1,7 @@
-import { createSelector } from "reselect";
+import { createSelector } from 'reselect';
 
-import { getExchangeIsoActiveTo } from "../exchange.selectors";
-import { RootState } from "../../store";
+import { getExchangeIsoActiveTo } from '../exchange.selectors';
+import { RootState } from '../../store';
 
 export const getCurrentRate = createSelector(
   (state: RootState) => state,

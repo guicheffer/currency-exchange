@@ -17,6 +17,7 @@ interface CurrencySelectionProps {
   currencyConvert: CurrencySchema['iso'];
   setActive: Function;
   type: CurrencySelectionType;
+  justExchanged?: Boolean;
 }
 
 const makeGetCurrencyBalance = () => getCurrencyBalance;
@@ -27,6 +28,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
   currencyConvert,
   setActive,
   type,
+  justExchanged = false,
 }): ReactElement => {
   const dispatch = useDispatch();
   const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
@@ -63,7 +65,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
         </form>
 
         <section className={styles.display}>
-          <p>
+          <p className={`${styles.balance} ${justExchanged ? styles.balanceJustExchanged : ''}`}>
             {DEFAULTS.APP.TRANSLATIONS?.BALANCE}: {formatAmount(currencyBalance, currencyOrigin)}
           </p>
 
