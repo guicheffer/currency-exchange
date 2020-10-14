@@ -19,8 +19,8 @@ export function CurrencyTo() {
 
   const [justExchanged, setJustExchanged] = useState(false);
 
-  const currencyOrigin = useSelector(getExchangeIsoActiveTo);
-  const currencyConvert = useSelector(getExchangeIsoActiveFrom);
+  const currencyBase = useSelector(getExchangeIsoActiveTo);
+  const currencyTo = useSelector(getExchangeIsoActiveFrom);
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
   const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
 
@@ -35,28 +35,27 @@ export function CurrencyTo() {
     setJustExchanged(true);
 
     dispatch(decrementBalance({
-      currency: currencyConvert,
+      currency: currencyTo,
       value: fromAmountValue,
     }));
 
     dispatch(incrementBalance({
-      currency: currencyOrigin,
+      currency: currencyBase,
       value: toAmountValue,
     }));
 
     dispatch(setAmountValue['from']({ amount: { value: null } }));
     dispatch(setAmountValue['to']({ amount: { value: null } }));
 
-    setTimeout(() => {
-      setJustExchanged(false);
-    }, DEFAULTS.APP.TIMEOUT_JUST_EXCHANGED);
-  }, [currencyConvert, currencyOrigin, dispatch, fromAmountValue, toAmountValue]);
+    // This will basically animate the balance increment on the "currencyTo" section
+    setTimeout(() => setJustExchanged(false), DEFAULTS.APP.TIMEOUT_JUST_EXCHANGED);
+  }, [currencyTo, currencyBase, dispatch, fromAmountValue, toAmountValue]);
 
   return (
     <CurrencySelection
       type='to'
-      currencyOrigin={currencyOrigin}
-      currencyConvert={currencyConvert}
+      currencyBase={currencyBase}
+      currencyTo={currencyTo}
       setActive={setActiveTo}
       justExchanged={justExchanged}
     >

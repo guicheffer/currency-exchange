@@ -18,13 +18,18 @@ start: ## start development
 	make install
 	$(PKG) start
 
-build: ## build environment based
+serve: ## build environment based
 	make install
 	$(PKG) build
+	$(PKG) serve
 
 i: install
 dev: start
-deploy: build
+
+deploy: serve
+build: serve
+prod: serve
+production: prod
 
 test: test-stuff
 test-stuff: ## test stuff

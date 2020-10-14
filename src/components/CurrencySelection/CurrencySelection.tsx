@@ -13,8 +13,8 @@ import DEFAULTS from '../../app/defaults';
 import styles from './CurrencySelection.module.scss';
 
 interface CurrencySelectionProps {
-  currencyOrigin: CurrencySchema['iso'];
-  currencyConvert: CurrencySchema['iso'];
+  currencyBase: CurrencySchema['iso'];
+  currencyTo: CurrencySchema['iso'];
   setActive: Function;
   type: CurrencySelectionType;
   justExchanged?: Boolean;
@@ -24,8 +24,8 @@ const makeGetCurrencyBalance = () => getCurrencyBalance;
 
 export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
   children,
-  currencyOrigin,
-  currencyConvert,
+  currencyBase,
+  currencyTo,
   setActive,
   type,
   justExchanged = false,
@@ -33,7 +33,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
   const dispatch = useDispatch();
   const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
   const selectCurrencyBalance = useMemo(makeGetCurrencyBalance, []);
-  const currencyBalance = useSelector((state: RootState) => selectCurrencyBalance(state, currencyOrigin));
+  const currencyBalance = useSelector((state: RootState) => selectCurrencyBalance(state, currencyBase));
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
   const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
 
@@ -42,7 +42,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
 
     // TODO: Dispatch polling from `fromAmount` as the `base` currency for our rates
 
-    if (selectedIso === currencyConvert) {
+    if (selectedIso === currencyTo) {
       dispatch(reverseCurrencies());
     } else {
       dispatch(setActive(selectedIso));
@@ -57,7 +57,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
           className={styles.selection}
           onSubmit={e => e.preventDefault()}
         >
-          <select value={currencyOrigin} className={styles.currency} onChange={handleSelection}>
+          <select value={currencyBase} className={styles.currency} onChange={handleSelection}>
             {Object.entries(DEFAULTS.APP.CURRENCIES).map(([currencyKey, { iso }]) => (<option key={currencyKey} value={iso}>{iso}</option>))}
           </select>
 
@@ -66,7 +66,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
 
         <section className={styles.display}>
           <p className={`${styles.balance} ${justExchanged ? styles.balanceJustExchanged : ''}`}>
-            {DEFAULTS.APP.TRANSLATIONS?.BALANCE}: {formatAmount(currencyBalance, currencyOrigin)}
+            {DEFAULTS.APP.TRANSLATIONS?.BALANCE}: {formatAmount(currencyBalance, currencyBase)}
           </p>
 
           {
@@ -76,7 +76,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
           {
             isSelectionTypeFrom && !hasMinimumAmount &&
             <p className={`${styles.warning}`}>
-              {DEFAULTS.APP.TRANSLATIONS?.MINIMUM_EXPECTED} {formatAmount(DEFAULTS.APP.CURRENCIES[currencyOrigin.toLowerCase()].minimum, currencyOrigin)}
+              {DEFAULTS.APP.TRANSLATIONS?.MINIMUM_EXPECTED} {formatAmount(DEFAULTS.APP.CURRENCIES[currencyBase.toLowerCase()].minimum, currencyBase)}
             </p>
           }
         </section>

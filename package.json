@@ -9,7 +9,10 @@
     "url": "https://github.com/guicheffer/currency-exchange/"
   },
   "var": {
-    "runner": "react-scripts"
+    "dist": "./build/",
+    "port": "3000",
+    "runner": "react-scripts",
+    "server": "http-server"
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.2.5",
@@ -21,6 +24,7 @@
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.0",
     "@types/react-redux": "7.1.7",
+    "http-server": "^0.12.3",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "7.2.0",
@@ -39,7 +43,8 @@
   "scripts": {
     "start": "$npm_package_var_runner start",
     "build": "$npm_package_var_runner build",
-    "test": "$npm_package_var_runner test"
+    "test": "$npm_package_var_runner test",
+    "serve": "$npm_package_var_server $npm_package_var_dist -p $npm_package_var_port"
   },
   "eslintConfig": {
     "extends": "react-app"

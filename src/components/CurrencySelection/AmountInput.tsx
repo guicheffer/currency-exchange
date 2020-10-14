@@ -27,15 +27,15 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
   const amountInput = useRef<HTMLInputElement>(null);
 
   const isAmountTypeFrom = useMemo(() => type === 'from', [type]);
-  const currencyOrigin = useSelector(getExchangeIsoActiveFrom);
-  const currencyConvert = useSelector(getExchangeIsoActiveTo);
+  const currencyBase = useSelector(getExchangeIsoActiveFrom);
+  const currencyTo = useSelector(getExchangeIsoActiveTo);
   const currentAmount = useSelector(isAmountTypeFrom ? getFromAmountValue : getToAmountValue);
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
   const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
   const currentRate = useSelector(getCurrentRate);
 
   // This will make a auto focus in case one of the currencies selection change
-  useEffect(() => amountInput.current?.focus(), [currencyOrigin, currencyConvert]);
+  useEffect(() => amountInput.current?.focus(), [currencyBase, currencyTo]);
 
   const handleAmountChange = useCallback((event: SyntheticEvent<HTMLInputElement>): void => {
     const inputValue = event.currentTarget.value;
