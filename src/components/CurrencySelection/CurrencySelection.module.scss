@@ -48,6 +48,8 @@
   width: 50%;
 }
 
+.amount__balanceExceeded { color: $_secondary-color; }
+
 .display {
   color: $_secondary-color;
   cursor: default;
@@ -60,7 +62,5 @@
   margin: 0 auto;
   user-select: none;
 
-  @media (max-width: $screen-sm-min) {
-    width: 95%;
-  }
+  @media (max-width: $screen-sm-min) { width: 95%; }
 }

@@ -3,7 +3,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type CurrencySelectionType = 'from' | 'to';
 
 export type AmountValueState = {
-  hasDecimalsStarted: boolean;
+  hasDecimalsStarted?: boolean;
+  hasZeroAfterComma?: boolean;
   value: null | number;
 }
 
@@ -13,10 +14,7 @@ type AmountsState = {
   };
 }
 
-const initialAmount = {
-  hasDecimalsStarted: false,
-  value: null,
-};
+const initialAmount = { value: null };
 
 const initialState: AmountsState = {
   from: {

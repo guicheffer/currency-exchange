@@ -13,7 +13,7 @@
   padding: (2 * $base-design-unit) 0;
   position: absolute;
   transform: translateX(-50%);
-  transition: background-color .1s linear, color .1s linear;
+  transition: background-color .2s ease-out, color .1s linear;
   width: 50%;
 
   &:hover {
@@ -23,6 +23,6 @@
   &:disabled {
     background-color: var(--exchange-button-bg-color-disabled);
     color: var(--exchange-button-color-disabled);
-    cursor: default;
+    cursor: not-allowed;
   }
 }

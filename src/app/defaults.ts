@@ -1,4 +1,4 @@
-import { CurrencySelectionType } from "../slices/amounts";
+import { CurrencySelectionType } from "../store/amounts/amounts.slices";
 import CURRENCIES, { DefaultCurrenciesInterface, CurrencySchema } from './currencies';
 import TRANSLATIONS, { DefaultTranslationsInterface } from './translations';
 
@@ -25,8 +25,8 @@ export default {
   APP: {
     CURRENCIES,
     CURRENCY: {
-      from: CURRENCIES.eur,
-      to: CURRENCIES.btc,
+      from: CURRENCIES.gbp,
+      to: CURRENCIES.eur,
     },
     LOCALE_STRING: 'de-DE',
     TRANSLATIONS,
