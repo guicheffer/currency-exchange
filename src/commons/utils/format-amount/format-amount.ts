@@ -10,7 +10,7 @@ const CONFIGS_MAX_FRACTION_DIGITS = 2;
 const CONFIGS_MIN_FRACTION_DIGITS = 0;
 const CONFIGS_MAX_FRACTION_DIGITS_ON_BTC = 8;
 
-export const formatAmount = (amount: number, currency?: CurrencySchema['iso']) => {
+export const formatAmount = (amount: number, currency?: CurrencySchema['iso'] ) => {
   // This will rely on users' native language when currency is passed (for balance purposes)
   // Likewise, for users' input on the amount value, format will remain the same
   const locale = currency ? navigator.language : CONFIGS.APP.LOCALE_STRING;
@@ -29,7 +29,7 @@ export const formatAmount = (amount: number, currency?: CurrencySchema['iso']) =
   //
   // Otherwise, a formatted amount (as browser does) returns the expected localized amount string;
   if (!currency) return formattedAmount;
-  return formattedAmount.replace(currency, CONFIGS.APP.CURRENCIES[currency.toLowerCase()].symbol);
+  return formattedAmount.replace(currency, CONFIGS.APP.CURRENCIES[currency].symbol);
 }
 
 export const maskAmountValue = ({

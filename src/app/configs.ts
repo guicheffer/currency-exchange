@@ -22,7 +22,7 @@ interface ConfigsInterface {
   },
 }
 
-export default {
+const CONFIGS = {
   APP: {
     CURRENCIES,
     CURRENCY: {
@@ -43,3 +43,5 @@ export default {
     DELETE: 8,
   },
 } as ConfigsInterface;
+
+export default CONFIGS;

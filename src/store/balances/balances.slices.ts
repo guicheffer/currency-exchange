@@ -13,10 +13,10 @@ type BalanceExchange = {
 }
 
 const initialState: ExchangeState = {
-  [CONFIGS.APP.CURRENCIES.eur.iso]: 25000,
-  [CONFIGS.APP.CURRENCIES.btc.iso]: 0.05,
-  [CONFIGS.APP.CURRENCIES.usd.iso]: 500,
-  [CONFIGS.APP.CURRENCIES.gbp.iso]: 15,
+  [CONFIGS.APP.CURRENCIES.eur.key]: 25000,
+  [CONFIGS.APP.CURRENCIES.btc.key]: 0.05,
+  [CONFIGS.APP.CURRENCIES.usd.key]: 500,
+  [CONFIGS.APP.CURRENCIES.gbp.key]: 15,
 };
 
 export const balancesSlice = createSlice({

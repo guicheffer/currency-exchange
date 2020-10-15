@@ -43,7 +43,8 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
 
   const handleAmountChange = useCallback((event: SyntheticEvent<HTMLInputElement>): void => {
     const inputValue = event.currentTarget.value;
-    const rawValue = parseFloat(removeMaskFromInputValue(inputValue));
+    const inputValueWithoutMask = removeMaskFromInputValue(inputValue);
+    const rawValue = parseFloat(inputValueWithoutMask);
     const value = !Number.isNaN(rawValue) ? rawValue : null;
 
     const hasDecimalsStarted = hasCharInValuePosition(inputValue, ',', 1);

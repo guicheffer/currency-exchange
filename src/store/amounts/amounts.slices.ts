@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import roundDown from '../../commons/utils/round-down/round-down';
+
 export type CurrencySelectionType = 'from' | 'to';
 
 export type AmountValueState = {
@@ -40,7 +42,8 @@ export const amountsSlice = createSlice({
 
       if (currentRate) {
         const { value } = amount;
-        state.to.amount = { value: (value && value * currentRate) || null };
+        const newToValue = value && roundDown(value * currentRate);
+        state.to.amount = { value: newToValue ?? null };
       }
     },
     setAmountTo: (state, action: PayloadAction<AmountPayload>) => {
@@ -49,7 +52,8 @@ export const amountsSlice = createSlice({
 
       if (currentRate) {
         const { value } = amount;
-        state.from.amount = { value: (value && value / currentRate) || null };
+        const newToValue = value && roundDown(value / currentRate);
+        state.from.amount = { value: newToValue ?? null };
       }
     },
     reverseAmounts: (state) => {

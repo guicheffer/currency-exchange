@@ -51,7 +51,13 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
           onSubmit={e => e.preventDefault()}
         >
           <select value={currencyBase} className={styles.currency} onChange={handleSelection}>
-            {Object.entries(CONFIGS.APP.CURRENCIES).map(([currencyKey, { iso }]) => (<option key={currencyKey} value={iso}>{iso}</option>))}
+            {
+              Object.entries(CONFIGS.APP.CURRENCIES).map(
+                ([currencyIndexKey, { iso, key }]) => {
+                  return <option key={currencyIndexKey} value={key}>{iso}</option>;
+                }
+              )
+            }
           </select>
 
           <AmountInput type={type} />
@@ -59,7 +65,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
 
         <BalanceDisplay
           type={type}
-          currencyBase={currencyBase}
+          currency={currencyBase}
           justExchanged={justExchanged}
         />
       </div>
