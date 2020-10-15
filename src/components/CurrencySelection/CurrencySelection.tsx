@@ -1,13 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import React, { FunctionComponent, ReactElement, useMemo } from 'react';
 
 import { AmountInput } from './containers/AmountInput';
 import { BalanceDisplay } from './containers/BalanceDisplay';
 
 import { CurrencySchema } from '../../app/currencies';
-import { CurrencySelectionType, setAmountValue } from '../../store/amounts/amounts.slices';
-import { getCurrentBaseRate } from '../../store/exchange/rates/rates.selectors';
-import { getFromAmountValue, getToAmountValue } from '../../store/amounts/amounts.selectors';
+import { CurrencySelectionType } from '../../store/amounts/amounts.slices';
 import { reverseCurrencies } from '../../store/exchange/exchange.slices';
 import CONFIGS from '../../app/configs';
 import styles from './CurrencySelection.module.scss';
@@ -15,7 +13,7 @@ import styles from './CurrencySelection.module.scss';
 interface CurrencySelectionProps {
   currencyBase: CurrencySchema['iso'];
   currencyTo: CurrencySchema['iso'];
-  setActive: Function;
+  setLocalCurrency: Function;
   type: CurrencySelectionType;
   justExchanged?: Boolean;
 }
@@ -25,14 +23,11 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
   children,
   currencyBase,
   currencyTo,
-  setActive,
+  setLocalCurrency,
   justExchanged = false,
 }): ReactElement => {
   const dispatch = useDispatch();
   const isTypeFrom = useMemo(() => type === 'from', [type]);
-
-  const currentAmount = useSelector(isTypeFrom ? getFromAmountValue : getToAmountValue);
-  const currentRate = useSelector(getCurrentBaseRate);
 
   const handleSelection = (event: React.SyntheticEvent<HTMLSelectElement>) => {
     const selectedIso = event.currentTarget.value;
@@ -43,11 +38,8 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
     if (selectedIso === currencyTo) {
       dispatch(reverseCurrencies());
     } else {
-      dispatch(setActive(selectedIso));
+      dispatch(setLocalCurrency(selectedIso));
     }
-
-    // TODO: When changing rate's calc by selectors, this should be removed!
-    dispatch(setAmountValue[type]({ amount: currentAmount, currentRate }));
   };
 
   return (

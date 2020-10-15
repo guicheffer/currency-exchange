@@ -5,13 +5,15 @@ import { CurrencySchema } from '../../app/currencies';
 import CONFIGS from '../../app/configs';
 
 type ExchangeState = {
-  active: {
+  active: CurrencySelectionType,
+  currency: {
     [key in CurrencySelectionType]: CurrencySchema['iso'];
   },
 }
 
 const initialState: ExchangeState = {
-  active: {
+  active: 'from',
+  currency: {
     from: CONFIGS.APP.DEFAULT_CURRENCY.from.iso,
     to: CONFIGS.APP.DEFAULT_CURRENCY.to.iso,
   },
@@ -21,17 +23,20 @@ export const exchangeSlice = createSlice({
   name: 'exchange',
   initialState,
   reducers: {
-    setActiveFrom: (state, action: PayloadAction<CurrencySchema['iso']>) => {
-      state.active.from = action.payload;
+    setCurrencyActiveFrom: (state, action: PayloadAction<CurrencySchema['iso']>) => {
+      state.currency.from = action.payload;
     },
-    setActiveTo: (state, action: PayloadAction<CurrencySchema['iso']>) => {
-      state.active.to = action.payload;
+    setCurrencyActiveTo: (state, action: PayloadAction<CurrencySchema['iso']>) => {
+      state.currency.to = action.payload;
     },
     reverseCurrencies: (state) => {
-      const currencyTo = state.active.to;
+      const currencyTo = state.currency.to;
 
-      state.active.to = state.active.from;
-      state.active.from = currencyTo;
+      state.currency.to = state.currency.from;
+      state.currency.from = currencyTo;
+    },
+    setActiveExchange: (state, action: PayloadAction<CurrencySelectionType>) => {
+      state.active = action.payload;
     },
   },
 });
@@ -39,8 +44,8 @@ export const exchangeSlice = createSlice({
 
 export const {
   reverseCurrencies,
-  setActiveFrom,
-  setActiveTo,
+  setCurrencyActiveFrom,
+  setCurrencyActiveTo,
 } = exchangeSlice.actions;
 
 export default exchangeSlice.reducer;

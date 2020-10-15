@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { CurrencySelection } from '../CurrencySelection/CurrencySelection';
 import { getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../store/exchange/exchange.selectors';
-import { setActiveFrom } from '../../store/exchange/exchange.slices';
+import { setCurrencyActiveFrom } from '../../store/exchange/exchange.slices';
 
 export function CurrencyFrom() {
   const currencyBase = useSelector(getExchangeIsoActiveFrom);
@@ -14,7 +14,7 @@ export function CurrencyFrom() {
       type='from'
       currencyBase={currencyBase}
       currencyTo={currencyTo}
-      setActive={setActiveFrom}
+      setLocalCurrency={setCurrencyActiveFrom}
     />
   );
 }

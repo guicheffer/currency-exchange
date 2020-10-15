@@ -61,7 +61,11 @@ $_nav_bubble_size: 4vh;
   @media (max-width: $screen-sm-min) { padding-top: 0; }
 }
 
-.rateSymbol { cursor: default; }
+.rateSymbol {
+  cursor: default;
+  margin-right: $base-design-unit;
+}
+
 .rateText {
   font-size: $font-size-sm;
   font-weight: $font-weight-semi;

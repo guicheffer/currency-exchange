@@ -15,6 +15,10 @@ interface ConfigsInterface {
         [key in CurrencySelectionType]: string;
       },
     },
+    MAX_FRACTION_DIGITS: number,
+    MAX_FRACTION_DIGITS_BTC: number,
+    MIN_FRACTION_DIGITS: number,
+    TWO_LAST_DIGITS_FRACTION: number,
     TIMEOUT_JUST_EXCHANGED: number,
   },
   KEYCODES: {
@@ -37,6 +41,11 @@ const CONFIGS = {
         to: '+',
       },
     },
+
+    MAX_FRACTION_DIGITS: 2,
+    MAX_FRACTION_DIGITS_BTC: 8,
+    MIN_FRACTION_DIGITS: 0,
+    TWO_LAST_DIGITS_FRACTION: 4,
 
     // Timeout for helping exchange action to hide its last triggered action state
     // Sorry for that, might be overengineering... 👀

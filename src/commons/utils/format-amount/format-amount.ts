@@ -6,9 +6,9 @@ import {
   CurrencySelectionType,
 } from '../../../store/amounts/amounts.slices';
 
-const CONFIGS_MAX_FRACTION_DIGITS = 2;
-const CONFIGS_MIN_FRACTION_DIGITS = 0;
-const CONFIGS_MAX_FRACTION_DIGITS_ON_BTC = 8;
+const CONFIGS_MAX_FRACTION_DIGITS = CONFIGS.APP.MAX_FRACTION_DIGITS;
+const CONFIGS_MIN_FRACTION_DIGITS = CONFIGS.APP.MIN_FRACTION_DIGITS;
+const CONFIGS_MAX_FRACTION_DIGITS_BTC = CONFIGS.APP.MAX_FRACTION_DIGITS_BTC;
 
 export const formatAmount = (amount: number, currency?: CurrencySchema['iso'] ) => {
   // This will rely on users' native language when currency is passed (for balance purposes)
@@ -21,7 +21,7 @@ export const formatAmount = (amount: number, currency?: CurrencySchema['iso'] ) 
     minimumFractionDigits: CONFIGS_MIN_FRACTION_DIGITS,
 
     // If currency is a bitcoin, we make sure we display all the decimals (since, you know...)
-    maximumFractionDigits: !currency || currency !== CONFIGS.APP.CURRENCIES.btc.iso ? CONFIGS_MAX_FRACTION_DIGITS : CONFIGS_MAX_FRACTION_DIGITS_ON_BTC,
+    maximumFractionDigits: !currency || currency !== CONFIGS.APP.CURRENCIES.btc.iso ? CONFIGS_MAX_FRACTION_DIGITS : CONFIGS_MAX_FRACTION_DIGITS_BTC,
   });
 
   // If there's given currency then we replace with the proper currency's symbol

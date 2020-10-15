@@ -8,8 +8,8 @@ import { CurrencySelection } from '../CurrencySelection/CurrencySelection';
 import { getBalanceExceeded } from '../../store/balances/balances.selectors';
 import { getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../store/exchange/exchange.selectors';
 import { getFromAmountValue, getMinimumAmountToExchange, getToAmountValue } from '../../store/amounts/amounts.selectors';
-import { setActiveTo } from '../../store/exchange/exchange.slices';
-import { setAmountValue } from '../../store/amounts/amounts.slices';
+import { setCurrencyActiveTo } from '../../store/exchange/exchange.slices';
+import { clearAmounts } from '../../store/amounts/amounts.slices';
 import CONFIGS from '../../app/configs';
 import styles from './CurrencyTo.module.scss';
 
@@ -46,8 +46,7 @@ export function CurrencyTo() {
       value: toAmountValue,
     }));
 
-    dispatch(setAmountValue['from']({ amount: { value: null } }));
-    dispatch(setAmountValue['to']({ amount: { value: null } }));
+    dispatch(clearAmounts());
 
     // This will basically animate the balance increment on the "currencyTo" section
     setTimeout(() => setJustExchangedState(false), CONFIGS.APP.TIMEOUT_JUST_EXCHANGED);
@@ -61,7 +60,7 @@ export function CurrencyTo() {
         type='to'
         currencyBase={currencyBase}
         currencyTo={currencyTo}
-        setActive={setActiveTo}
+        setLocalCurrency={setCurrencyActiveTo}
         justExchanged={justExchangedState}
       >
         <button
