@@ -43,7 +43,10 @@ $_nav_bubble_size: 4vh;
   width: $_nav_bubble_size;
 
   @media (max-width: $screen-sm-min) {
-    text-indent: -1.4vh;
+    $size: 1.4vh;
+
+    font-size: $size;
+    text-indent: $size * -0.3; // please don't ask me why - swear it could be better
   }
 }
 
@@ -54,6 +57,8 @@ $_nav_bubble_size: 4vh;
   padding: ($base-design-unit / 1.3) (1.3 * $base-design-unit);
   top: $_nav_bubble_size / -2.5;
   transform: translateX(-50%);
+
+  @media (max-width: $screen-sm-min) { padding-top: 0; }
 }
 
 .rateSymbol { cursor: default; }

@@ -46,6 +46,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
       dispatch(setActive(selectedIso));
     }
 
+    // TODO: When changing rate's calc by selectors, this should be removed!
     dispatch(setAmountValue[type]({ amount: currentAmount, currentRate }));
   };
 
