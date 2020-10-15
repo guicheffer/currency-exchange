@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { getExchangeIsoActiveFrom } from '../exchange/exchange.selectors';
 import { RootState } from '../store';
-import DEFAULTS from '../../app/defaults';
+import CONFIGS from '../../app/configs';
 
 export const getFromAmountValue = createSelector(
   (state: RootState) => state,
@@ -19,6 +19,6 @@ export const getMinimumAmountToExchange = createSelector(
   (state) => getExchangeIsoActiveFrom(state),
   (state, currency) => {
     if (!state.amounts.from.amount.value) return true;
-    return state.amounts.from.amount.value >= DEFAULTS.APP.CURRENCIES[currency.toLowerCase()].minimum;
+    return state.amounts.from.amount.value >= CONFIGS.APP.CURRENCIES[currency.toLowerCase()].minimum;
   },
 );

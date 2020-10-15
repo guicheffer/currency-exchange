@@ -2,7 +2,7 @@ import { CurrencySelectionType } from '../store/amounts/amounts.slices';
 import CURRENCIES, { DefaultCurrenciesInterface, CurrencySchema } from './currencies';
 import TRANSLATIONS, { DefaultTranslationsInterface } from './translations';
 
-interface DefaultsInterface {
+interface ConfigsInterface {
   APP: {
     CURRENCIES: DefaultCurrenciesInterface,
     CURRENCY: {
@@ -42,4 +42,4 @@ export default {
   KEYCODES: {
     DELETE: 8,
   },
-} as DefaultsInterface;
+} as ConfigsInterface;

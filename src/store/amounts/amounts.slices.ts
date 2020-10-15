@@ -52,14 +52,22 @@ export const amountsSlice = createSlice({
         state.from.amount = { value: (value && value / currentRate) || null };
       }
     },
+    reverseAmounts: (state) => {
+      const fromAmount = state.from.amount;
+
+      state.from.amount = state.to.amount;
+      state.to.amount = fromAmount;
+    },
   },
 });
 
 
-const { setAmountFrom, setAmountTo } = amountsSlice.actions;
-export const setAmountValue = {
+const { reverseAmounts, setAmountFrom, setAmountTo } = amountsSlice.actions;
+const setAmountValue = {
   from: setAmountFrom,
   to: setAmountTo,
 };
+
+export { reverseAmounts, setAmountValue };
 
 export default amountsSlice.reducer;

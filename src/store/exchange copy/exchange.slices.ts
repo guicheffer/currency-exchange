@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { CurrencySelectionType } from '../amounts/amounts.slices';
 import { CurrencySchema } from '../../app/currencies';
-import CONFIGS from '../../app/configs';
+import DEFAULTS from '../../app/configs';
 
 type ExchangeState = {
   active: {
@@ -12,8 +12,8 @@ type ExchangeState = {
 
 const initialState: ExchangeState = {
   active: {
-    from: CONFIGS.APP.CURRENCY.from.iso,
-    to: CONFIGS.APP.CURRENCY.to.iso,
+    from: DEFAULTS.APP.CURRENCY.from.iso,
+    to: DEFAULTS.APP.CURRENCY.to.iso,
   },
 };
 

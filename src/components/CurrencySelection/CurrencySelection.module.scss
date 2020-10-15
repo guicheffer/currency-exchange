@@ -10,20 +10,6 @@
   width: 100%;
 }
 
-.container {
-  margin: 0 auto;
-  width: 50%;
-
-  @media (max-width: $screen-sm-max) {
-    margin: 0 $base-design-unit;
-    width: 100%;
-  }
-}
-
-.container__to {
-  margin-bottom: (10 * $base-design-unit);
-}
-
 .selection {
   display: flex;
   flex-direction: row;

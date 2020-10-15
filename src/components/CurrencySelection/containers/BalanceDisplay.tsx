@@ -1,0 +1,52 @@
+import { useSelector } from 'react-redux';
+import React, { FunctionComponent, ReactElement, useMemo } from 'react';
+
+import { CurrencySchema } from '../../../app/currencies';
+import { CurrencySelectionType } from '../../../store/amounts/amounts.slices';
+import { formatAmount } from '../../../commons/utils/format-amount/format-amount';
+import { getBalanceExceeded, getCurrencyBalance } from '../../../store/balances/balances.selectors';
+import { getMinimumAmountToExchange } from '../../../store/amounts/amounts.selectors';
+import { RootState } from '../../../store/store';
+import CONFIGS from '../../../app/configs';
+import styles from '../CurrencySelection.module.scss';
+
+interface BalanceDisplayProps {
+  currencyBase: CurrencySchema['iso'];
+  type: CurrencySelectionType;
+  justExchanged?: Boolean;
+}
+
+const makeGetCurrencyBalance = () => getCurrencyBalance;
+
+export const BalanceDisplay: FunctionComponent<BalanceDisplayProps> = ({
+  type,
+  currencyBase,
+  justExchanged = false,
+}): ReactElement => {
+  const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
+  const hasBalanceExceeded = useSelector(getBalanceExceeded);
+  const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
+  const selectCurrencyBalance = useMemo(makeGetCurrencyBalance, []);
+  const currencyBalance = useSelector((state: RootState) => selectCurrencyBalance(state, currencyBase));
+
+  return (
+    <section className={styles.display}>
+      <p className={`${styles.balance} ${!isSelectionTypeFrom && justExchanged ? styles.balanceJustExchanged : ''}`}>
+        {CONFIGS.APP.TRANSLATIONS?.BALANCE}: {formatAmount(currencyBalance, currencyBase)}
+      </p>
+
+      {/* This will display a "balance exceeded" info when amount value */}
+      {
+        isSelectionTypeFrom && hasBalanceExceeded && <p> {CONFIGS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
+      }
+
+      {/* This will display a "minimum amount is..." warning */}
+      {
+        isSelectionTypeFrom && !hasMinimumAmount &&
+        <p className={`${styles.warning}`}>
+          {CONFIGS.APP.TRANSLATIONS?.MINIMUM_EXPECTED} {formatAmount(CONFIGS.APP.CURRENCIES[currencyBase.toLowerCase()].minimum, currencyBase)}
+        </p>
+      }
+    </section>
+  );
+}

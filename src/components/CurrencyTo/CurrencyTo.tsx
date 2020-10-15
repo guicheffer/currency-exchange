@@ -1,6 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { OptionsNavigator } from './containers/OptionsNavigator';
+
 import { decrementBalance, incrementBalance } from '../../store/balances/balances.slices';
 import { CurrencySelection } from '../CurrencySelection/CurrencySelection';
 import { getBalanceExceeded } from '../../store/balances/balances.selectors';
@@ -8,7 +10,7 @@ import { getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../store/ex
 import { getFromAmountValue, getMinimumAmountToExchange, getToAmountValue } from '../../store/amounts/amounts.selectors';
 import { setActiveTo } from '../../store/exchange/exchange.slices';
 import { setAmountValue } from '../../store/amounts/amounts.slices';
-import DEFAULTS from '../../app/defaults';
+import CONFIGS from '../../app/configs';
 import styles from './CurrencyTo.module.scss';
 
 const makeGetFromAmountValue = () => getFromAmountValue;
@@ -17,7 +19,7 @@ const makeGetToAmountValue = () => getToAmountValue;
 export function CurrencyTo() {
   const dispatch = useDispatch();
 
-  const [justExchanged, setJustExchanged] = useState(false);
+  const [justExchangedState, setJustExchangedState] = useState(false);
 
   const currencyBase = useSelector(getExchangeIsoActiveTo);
   const currencyTo = useSelector(getExchangeIsoActiveFrom);
@@ -31,8 +33,8 @@ export function CurrencyTo() {
   const toAmountValue = useSelector(selectGetToAmountValue)?.value as number;
 
   const handleExchangeAction = useCallback(() => {
-    if (!window.confirm(DEFAULTS.APP.TRANSLATIONS?.CONFIRM_EXCHANGE)) return false;
-    setJustExchanged(true);
+    if (!window.confirm(CONFIGS.APP.TRANSLATIONS?.CONFIRM_EXCHANGE)) return false;
+    setJustExchangedState(true);
 
     dispatch(decrementBalance({
       currency: currencyTo,
@@ -48,23 +50,27 @@ export function CurrencyTo() {
     dispatch(setAmountValue['to']({ amount: { value: null } }));
 
     // This will basically animate the balance increment on the "currencyTo" section
-    setTimeout(() => setJustExchanged(false), DEFAULTS.APP.TIMEOUT_JUST_EXCHANGED);
+    setTimeout(() => setJustExchangedState(false), CONFIGS.APP.TIMEOUT_JUST_EXCHANGED);
   }, [currencyTo, currencyBase, dispatch, fromAmountValue, toAmountValue]);
 
   return (
-    <CurrencySelection
-      type='to'
-      currencyBase={currencyBase}
-      currencyTo={currencyTo}
-      setActive={setActiveTo}
-      justExchanged={justExchanged}
-    >
-      <button
-        type='submit'
-        disabled={Boolean(!fromAmountValue || !hasMinimumAmount || hasBalanceExceeded)}
-        className={styles.exchange}
-        onClick={handleExchangeAction}
-      > {DEFAULTS.APP.TRANSLATIONS?.EXCHANGE_ACTION} </button>
-    </CurrencySelection>
+    <>
+      <OptionsNavigator />
+
+      <CurrencySelection
+        type='to'
+        currencyBase={currencyBase}
+        currencyTo={currencyTo}
+        setActive={setActiveTo}
+        justExchanged={justExchangedState}
+      >
+        <button
+          type='submit'
+          disabled={Boolean(!fromAmountValue || !hasMinimumAmount || hasBalanceExceeded)}
+          className={styles.exchangeAction}
+          onClick={handleExchangeAction}
+        > {CONFIGS.APP.TRANSLATIONS?.EXCHANGE_ACTION} </button>
+      </CurrencySelection>
+    </>
   );
 }

@@ -1,7 +1,7 @@
 import { createSlice, /*PayloadAction*/ } from '@reduxjs/toolkit';
 
 import { CurrencySchema } from '../../../app/currencies';
-import DEFAULTS from '../../../app/defaults';
+import CONFIGS from '../../../app/configs';
 
 type ExchangeState = {
   [key in CurrencySchema['iso']]: number;
@@ -13,10 +13,10 @@ type ExchangeState = {
 
 const initialState: ExchangeState = {
   // TODO: Organize base currency (Base = GBP)
-  [DEFAULTS.APP.CURRENCIES.btc.iso]: 1,
-  [DEFAULTS.APP.CURRENCIES.eur.iso]: 1,
-  [DEFAULTS.APP.CURRENCIES.usd.iso]: 1,
-  [DEFAULTS.APP.CURRENCIES.gbp.iso]: 1,
+  [CONFIGS.APP.CURRENCIES.btc.iso]: 1,
+  [CONFIGS.APP.CURRENCIES.eur.iso]: 0.9,
+  [CONFIGS.APP.CURRENCIES.usd.iso]: 1,
+  [CONFIGS.APP.CURRENCIES.gbp.iso]: 1.1,
 };
 
 export const ratesSlice = createSlice({

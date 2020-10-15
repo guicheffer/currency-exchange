@@ -1,24 +1,77 @@
+@import '../../commons/styles/defaults/breakpoints';
+@import '../../commons/styles/defaults/colors';
 @import '../../commons/styles/defaults/design-system';
 @import '../../commons/styles/defaults/typography';
+@import '../../commons/styles/defaults/variables';
 
-.exchange {
+$_nav_bubble_size: 4vh;
+
+.button {
+  border: 0;
+  cursor: pointer;
+  font-size: $font-size-mid;
+  outline: none;
+  transition: background-color .2s ease-out, color .1s linear;
+
+  &:active, &:hover { color: $white; }
+  &:hover { background-color: var(--exchange-button-bg-color-hover); }
+  &:active { background-color: var(--exchange-button-bg-color-pressed); }
+}
+
+.navigation {
+  height: 0;
+  overflow: visible;
+  position: relative;
+}
+
+.currentRateInfo,
+.switchAction {
+  background: $white;
+  color: var(--app-primary-color);
+  position: absolute;
+  z-index: 1;
+}
+
+.switchAction {
+  composes: button;
+
+  border-radius: 100%;
+  height: $_nav_bubble_size;
+  top: $_nav_bubble_size / -2;
+  width: $_nav_bubble_size;
+
+  @media (max-width: $screen-sm-min) {
+    text-indent: -1.5vh;
+  }
+}
+
+.currentRateInfo {
+  border-radius: 2 * $base-design-unit;
+  height: $_nav_bubble_size / 2;
+  left: 50%;
+  padding: ($base-design-unit / 1.3) (1.3 * $base-design-unit);
+  top: $_nav_bubble_size / -2.5;
+  transform: translateX(-50%);
+}
+
+.rateSymbol { cursor: default; }
+.rateText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semi;
+}
+
+.exchangeAction {
   @include default-field;
+  composes: button;
 
   background-color: var(--exchange-button-bg-color);
   border-radius: 2 * $base-design-unit;
   bottom: 10 * $base-design-unit;
-  cursor: pointer;
-  font-size: $font-size-mid;
   left: 50%;
   padding: (2 * $base-design-unit) 0;
   position: absolute;
   transform: translateX(-50%);
-  transition: background-color .2s ease-out, color .1s linear;
   width: 50%;
-
-  &:hover {
-    background-color: var(--exchange-button-bg-color-hover);
-  }
 
   &:disabled {
     background-color: var(--exchange-button-bg-color-disabled);

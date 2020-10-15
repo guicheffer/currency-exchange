@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { CurrencySchema } from '../../app/currencies';
-import DEFAULTS from '../../app/defaults';
+import CONFIGS from '../../app/configs';
 
 type ExchangeState = {
   [key in CurrencySchema['iso']]: number;
@@ -13,10 +13,10 @@ type BalanceExchange = {
 }
 
 const initialState: ExchangeState = {
-  [DEFAULTS.APP.CURRENCIES.eur.iso]: 25000,
-  [DEFAULTS.APP.CURRENCIES.btc.iso]: 0.05,
-  [DEFAULTS.APP.CURRENCIES.usd.iso]: 500,
-  [DEFAULTS.APP.CURRENCIES.gbp.iso]: 15,
+  [CONFIGS.APP.CURRENCIES.eur.iso]: 25000,
+  [CONFIGS.APP.CURRENCIES.btc.iso]: 0.05,
+  [CONFIGS.APP.CURRENCIES.usd.iso]: 500,
+  [CONFIGS.APP.CURRENCIES.gbp.iso]: 15,
 };
 
 export const balancesSlice = createSlice({

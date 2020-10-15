@@ -10,19 +10,23 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CurrencySelectionType, setAmountValue } from '../../store/amounts/amounts.slices';
-import { getBalanceExceeded } from '../../store/balances/balances.selectors';
-import { getCurrentRate } from '../../store/exchange/rates/rates.selectors';
-import { getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../store/exchange/exchange.selectors';
-import { getFromAmountValue, getMinimumAmountToExchange, getToAmountValue } from '../../store/amounts/amounts.selectors';
-import { maskAmountValue, removeMaskFromInputValue } from '../../commons/utils/format-amount/format-amount';
-import DEFAULTS from '../../app/defaults';
-import hasCharInValuePosition from '../../commons/utils/has-char-in-value-position/has-char-in-value-position';
-import styles from './CurrencySelection.module.scss';
+import { CurrencySelectionType, setAmountValue } from '../../../store/amounts/amounts.slices';
+import { getBalanceExceeded } from '../../../store/balances/balances.selectors';
+import { getCurrentRate } from '../../../store/exchange/rates/rates.selectors';
+import { getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
+import { getFromAmountValue, getMinimumAmountToExchange, getToAmountValue } from '../../../store/amounts/amounts.selectors';
+import { maskAmountValue, removeMaskFromInputValue } from '../../../commons/utils/format-amount/format-amount';
+import CONFIGS from '../../../app/configs';
+import hasCharInValuePosition from '../../../commons/utils/has-char-in-value-position/has-char-in-value-position';
+import styles from '../CurrencySelection.module.scss';
+
+type AmountInputProps = {
+  type: CurrencySelectionType;
+}
 
 // This is rendering every time since we have a mask here
 // which is updating its default value as reference;
-export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ type }): ReactElement => {
+export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): ReactElement => {
   const dispatch = useDispatch();
   const amountInput = useRef<HTMLInputElement>(null);
 
@@ -55,7 +59,7 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
     }));
   }, [currentRate, dispatch, type]);
 
-  const shouldAllowKeyPress = useCallback((
+  const handleKeyPress = useCallback((
     event: KeyboardEvent<HTMLInputElement>,
   ): void => {
     const amountValue = event.currentTarget.value;
@@ -81,7 +85,7 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
 
       (amountValue &&
       !permittedValueRegex.test(amountValue) &&
-      event.keyCode !== DEFAULTS.KEYCODES.DELETE &&
+      event.keyCode !== CONFIGS.KEYCODES.DELETE &&
       !((event.currentTarget.selectionEnd as number) > (event.currentTarget.selectionStart as number)))
     ) return event.preventDefault();
   }, []);
@@ -97,7 +101,7 @@ export const AmountInput: FunctionComponent<{type: CurrencySelectionType}> = ({ 
         className={`${styles.amount} ${isAmountTypeFrom && (hasBalanceExceeded || !hasMinimumAmount) ? styles.amount__balanceExceeded : ''}`}
         placeholder='0'
         onChange={handleAmountChange}
-        onKeyPress={shouldAllowKeyPress}
+        onKeyPress={handleKeyPress}
         onPaste={e => e.preventDefault()}
         value={maskAmountValue(currentAmount, type)}
       />
