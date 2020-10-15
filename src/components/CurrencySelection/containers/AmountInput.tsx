@@ -30,13 +30,15 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
   const dispatch = useDispatch();
   const amountInput = useRef<HTMLInputElement>(null);
 
-  const isAmountTypeFrom = useMemo(() => type === 'from', [type]);
+  const isTypeFrom = useMemo(() => type === 'from', [type]);
+
   const currencyBase = useSelector(getExchangeIsoActiveFrom);
   const currencyTo = useSelector(getExchangeIsoActiveTo);
-  const currentAmount = useSelector(isAmountTypeFrom ? getFromAmountValue : getToAmountValue);
+  const currentAmount = useSelector(isTypeFrom ? getFromAmountValue : getToAmountValue);
+  const currentRate = useSelector(getCurrentRate);
+
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
   const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
-  const currentRate = useSelector(getCurrentRate);
 
   // This will make a auto focus in case one of the currencies selection change
   useEffect(() => amountInput.current?.focus(), [currencyBase, currencyTo]);
@@ -95,11 +97,11 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
     <>
       <input
         type='text'
-        ref={isAmountTypeFrom ? amountInput : null}
+        ref={isTypeFrom ? amountInput : null}
         inputMode='decimal'
-        autoFocus={isAmountTypeFrom}
+        autoFocus={isTypeFrom}
         maxLength={Number.MAX_SAFE_INTEGER.toString().length}
-        className={`${styles.amount} ${isAmountTypeFrom && (hasBalanceExceeded || !hasMinimumAmount) ? styles.amount__balanceExceeded : ''}`}
+        className={`${styles.amount} ${isTypeFrom && (hasBalanceExceeded || !hasMinimumAmount) ? styles.amount__balanceExceeded : ''}`}
         placeholder='0'
         onChange={handleAmountChange}
         onKeyPress={handleKeyPress}

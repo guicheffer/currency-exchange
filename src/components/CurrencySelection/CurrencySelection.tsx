@@ -1,11 +1,13 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import React, { FunctionComponent, ReactElement, useMemo } from 'react';
 
 import { AmountInput } from './containers/AmountInput';
 import { BalanceDisplay } from './containers/BalanceDisplay';
 
 import { CurrencySchema } from '../../app/currencies';
-import { CurrencySelectionType } from '../../store/amounts/amounts.slices';
+import { CurrencySelectionType, setAmountValue } from '../../store/amounts/amounts.slices';
+import { getCurrentBaseRate } from '../../store/exchange/rates/rates.selectors';
+import { getFromAmountValue, getToAmountValue } from '../../store/amounts/amounts.selectors';
 import { reverseCurrencies } from '../../store/exchange/exchange.slices';
 import CONFIGS from '../../app/configs';
 import styles from './CurrencySelection.module.scss';
@@ -27,7 +29,10 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
   justExchanged = false,
 }): ReactElement => {
   const dispatch = useDispatch();
-  const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
+  const isTypeFrom = useMemo(() => type === 'from', [type]);
+
+  const currentAmount = useSelector(isTypeFrom ? getFromAmountValue : getToAmountValue);
+  const currentRate = useSelector(getCurrentBaseRate);
 
   const handleSelection = (event: React.SyntheticEvent<HTMLSelectElement>) => {
     const selectedIso = event.currentTarget.value;
@@ -40,11 +45,13 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
     } else {
       dispatch(setActive(selectedIso));
     }
+
+    dispatch(setAmountValue[type]({ amount: currentAmount, currentRate }));
   };
 
   return (
     <section className={`${styles.row} currency-exchange-section currency-exchange-section--${type}`}>
-      <div className={`container ${!isSelectionTypeFrom ? 'container__to' : ''}`}>
+      <div className={`container ${!isTypeFrom ? 'container__to' : ''}`}>
         <form
           autoComplete='off'
           className={styles.selection}

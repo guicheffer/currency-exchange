@@ -37,6 +37,7 @@ export const amountsSlice = createSlice({
   initialState,
   reducers: {
     setAmountFrom: (state, action: PayloadAction<AmountPayload>) => {
+      console.log('heeeey');
       const { amount, currentRate } = action.payload;
       state.from.amount = amount;
 

@@ -13,7 +13,7 @@ type ExchangeState = {
 const initialState: ExchangeState = {
   // TODO: Organize base currency (Base = GBP)
 
-  [CONFIGS.APP.CURRENCIES.btc.key]: 1,
+  [CONFIGS.APP.CURRENCIES.btc.key]: 0.1111,
   [CONFIGS.APP.CURRENCIES.eur.key]: 0.9,
   [CONFIGS.APP.CURRENCIES.usd.key]: 1,
   [CONFIGS.APP.CURRENCIES.gbp.key]: 1.1750,
