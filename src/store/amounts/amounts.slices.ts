@@ -37,11 +37,10 @@ export const amountsSlice = createSlice({
   initialState,
   reducers: {
     setAmountFrom: (state, action: PayloadAction<AmountPayload>) => {
-      console.log('heeeey');
       const { amount, currentRate } = action.payload;
       state.from.amount = amount;
 
-      // TODO: Change that to selectors (and not state change)
+      // TODO: Change that to selectors (and not state change!)
       if (currentRate) {
         const { value } = amount;
         const newToValue = value && roundDown(value * currentRate);
@@ -52,7 +51,7 @@ export const amountsSlice = createSlice({
       const { amount, currentRate } = action.payload;
       state.to.amount = amount;
 
-      // TODO: Change that to selectors (and not state change)
+      // TODO: Change that to selectors (and not state change!)
       if (currentRate) {
         const { value } = amount;
         const newToValue = value && roundDown(value / currentRate);
