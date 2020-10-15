@@ -26,7 +26,8 @@ body {
   width: 50%;
 
   @media (max-width: $screen-sm-max) {
-    margin: 0 $base-design-unit;
+    margin: 0;
+    padding: 0 $base-design-unit;
     width: 100%;
   }
 
@@ -39,12 +40,21 @@ body {
 
     &--from {
       background-color: var(--selection-from-background);
-      height: 40vh;
+      height: 20vh;
     }
 
     &--to {
       background-color: var(--selection-to-background);
-      height: 60vh;
+      height: 30vh;
+    }
+
+    // Hey you! Please test on a real phone if you're willing to see the mobile version 🙏🏼
+    //
+    // It looks like our currency selection section will squeeze
+    // and it will allow the keyboard to show up as the "amountFrom" gets focused
+    @media (min-width: $screen-sm-min) {
+      &--from { height: 40vh; }
+      &--to { height: 60vh; }
     }
   }
 }

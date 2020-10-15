@@ -21,6 +21,7 @@ $_nav_bubble_size: 4vh;
 .navigation {
   height: 0;
   overflow: visible;
+  padding: 0;
   position: relative;
 }
 
@@ -37,11 +38,12 @@ $_nav_bubble_size: 4vh;
 
   border-radius: 100%;
   height: $_nav_bubble_size;
+  left: 1vh;
   top: $_nav_bubble_size / -2;
   width: $_nav_bubble_size;
 
   @media (max-width: $screen-sm-min) {
-    text-indent: -1.5vh;
+    text-indent: -1.4vh;
   }
 }
 
@@ -77,5 +79,9 @@ $_nav_bubble_size: 4vh;
     background-color: var(--exchange-button-bg-color-disabled);
     color: var(--exchange-button-color-disabled);
     cursor: not-allowed;
+  }
+
+  @media (max-width: $screen-sm-min) {
+    bottom: 4 * $base-design-unit;
   }
 }

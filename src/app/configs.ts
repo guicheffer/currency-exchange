@@ -5,7 +5,7 @@ import TRANSLATIONS, { DefaultTranslationsInterface } from './translations';
 interface ConfigsInterface {
   APP: {
     CURRENCIES: DefaultCurrenciesInterface,
-    CURRENCY: {
+    DEFAULT_CURRENCY: {
       [key in CurrencySelectionType]: CurrencySchema;
     },
     LOCALE_STRING: string;
@@ -25,7 +25,7 @@ interface ConfigsInterface {
 const CONFIGS = {
   APP: {
     CURRENCIES,
-    CURRENCY: {
+    DEFAULT_CURRENCY: {
       from: CURRENCIES.gbp,
       to: CURRENCIES.eur,
     },
@@ -37,6 +37,9 @@ const CONFIGS = {
         to: '+',
       },
     },
+
+    // Timeout for helping exchange action to hide its last triggered action state
+    // Sorry for that, might be overengineering... 👀
     TIMEOUT_JUST_EXCHANGED: 3000,
   },
   KEYCODES: {

@@ -12,8 +12,8 @@ type ExchangeState = {
 
 const initialState: ExchangeState = {
   active: {
-    from: CONFIGS.APP.CURRENCY.from.iso,
-    to: CONFIGS.APP.CURRENCY.to.iso,
+    from: CONFIGS.APP.DEFAULT_CURRENCY.from.iso,
+    to: CONFIGS.APP.DEFAULT_CURRENCY.to.iso,
   },
 };
 
