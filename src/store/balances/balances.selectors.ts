@@ -1,14 +1,14 @@
 import { createSelector } from 'reselect';
 
 import { CurrencySchema } from '../../app/currencies';
-import { getFromAmountValue } from '../amounts/amounts.selectors';
+import { getAmountFrom } from '../amounts/amounts.selectors';
 import { getExchangeIsoActiveFrom } from '../exchange/exchange.selectors';
 import { RootState } from '../store';
 
 export const getBalanceExceeded = createSelector(
   (state: RootState) => state,
   (state) => getExchangeIsoActiveFrom(state),
-  (state) => getFromAmountValue(state),
+  (state) => getAmountFrom(state),
   (state, currency, { value }) => (value && value > getCurrencyBalance(state, currency)) ?? null,
 );
 

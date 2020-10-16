@@ -1,55 +1,50 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type CurrencySelectionType = 'from' | 'to';
-
-export type AmountValueState = {
+type AmountOptions = {
   hasDecimalsStarted?: boolean;
   hasZeroAfterComma?: boolean;
+}
+
+export type CurrencySelectionType = 'from' | 'to';
+
+export type AmountSet = {
+  options?: AmountOptions;
   value: null | number;
 }
 
-type AmountsState = {
-  [key in CurrencySelectionType]: {
-    amount: AmountValueState;
-  };
+type AmountState = {
+  [key in CurrencySelectionType]: AmountSet;
 }
 
-const initialAmount = { value: null };
-
-const initialState: AmountsState = {
-  from: {
-    amount: initialAmount,
-  },
-  to: {
-    amount: initialAmount,
-  },
+export const defaultAmountState = { value: null };
+const initialState: AmountState = {
+  from: defaultAmountState,
+  to: defaultAmountState,
 };
 
 export const amountsSlice = createSlice({
   name: 'amounts',
   initialState,
   reducers: {
-    clearAmounts: (state) => {
-      state.from.amount = { value: null };
-      state.to.amount = { value: null };
+    clearAmountValues: (state) => {
+      state.from = defaultAmountState;
+      state.to = defaultAmountState;
     },
-    setAmountFrom: (state, action: PayloadAction<AmountValueState>) => {
-      const amount = action.payload;
-      state.from.amount = amount;
+    setAmountFrom: (state, action: PayloadAction<AmountSet>) => {
+      state.from = { ...action.payload };
     },
-    setAmountTo: (state, action: PayloadAction<AmountValueState>) => {
-      const amount = action.payload;
-      state.to.amount = amount;
+    setAmountTo: (state, action: PayloadAction<AmountSet>) => {
+      state.to = { ...action.payload };
     },
   },
 });
 
 
-const { clearAmounts, setAmountFrom, setAmountTo } = amountsSlice.actions;
+const { clearAmountValues, setAmountFrom, setAmountTo } = amountsSlice.actions;
 const setAmountValue = {
   from: setAmountFrom,
   to: setAmountTo,
 };
-export { clearAmounts, setAmountValue };
+export { clearAmountValues, setAmountValue };
 
 export default amountsSlice.reducer;

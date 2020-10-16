@@ -4,53 +4,46 @@ import { useDispatch, useSelector } from 'react-redux';
 import { OptionsNavigator } from './containers/OptionsNavigator';
 
 import { decrementBalance, incrementBalance } from '../../store/balances/balances.slices';
+import { clearAmountValues } from '../../store/amounts/amounts.slices';
 import { CurrencySelection } from '../CurrencySelection/CurrencySelection';
 import { getBalanceExceeded } from '../../store/balances/balances.selectors';
 import { getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../store/exchange/exchange.selectors';
-import { getFromAmountValue, getMinimumAmountToExchange, getToAmountValue } from '../../store/amounts/amounts.selectors';
+import { getAmountFrom, getMinimumAmountToExchange, getAmountTo } from '../../store/amounts/amounts.selectors';
 import { setCurrencyActiveTo } from '../../store/exchange/exchange.slices';
-import { clearAmounts } from '../../store/amounts/amounts.slices';
 import CONFIGS from '../../app/configs';
 import styles from './CurrencyTo.module.scss';
 
-const makeGetFromAmountValue = () => getFromAmountValue;
-const makeGetToAmountValue = () => getToAmountValue;
+const makeGetFromAmountValue = () => getAmountFrom;
+const makeGetToAmountValue = () => getAmountTo;
 
 export function CurrencyTo() {
   const dispatch = useDispatch();
 
   const [justExchangedState, setJustExchangedState] = useState(false);
 
-  const currencyBase = useSelector(getExchangeIsoActiveTo);
-  const currencyTo = useSelector(getExchangeIsoActiveFrom);
+  const activeCurrency = useSelector(getExchangeIsoActiveTo);
+  const convertCurrency = useSelector(getExchangeIsoActiveFrom);
+
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
   const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
 
   const selectGetFromAmountValue = useMemo(makeGetFromAmountValue, []);
-  const fromAmountValue = useSelector(selectGetFromAmountValue)?.value as number;
+  const amountFromValue = useSelector(selectGetFromAmountValue)?.value as number;
 
   const selectGetToAmountValue = useMemo(makeGetToAmountValue, []);
-  const toAmountValue = useSelector(selectGetToAmountValue)?.value as number;
+  const amountToValue = useSelector(selectGetToAmountValue)?.value as number;
 
   const handleExchangeAction = useCallback(() => {
     if (!window.confirm(CONFIGS.APP.TRANSLATIONS?.CONFIRM_EXCHANGE)) return false;
     setJustExchangedState(true);
 
-    dispatch(decrementBalance({
-      currency: currencyTo,
-      value: fromAmountValue,
-    }));
+    dispatch(decrementBalance({ currency: convertCurrency, value: amountFromValue }));
+    dispatch(incrementBalance({ currency: activeCurrency, value: amountToValue }));
+    dispatch(clearAmountValues());
 
-    dispatch(incrementBalance({
-      currency: currencyBase,
-      value: toAmountValue,
-    }));
-
-    dispatch(clearAmounts());
-
-    // This will basically animate the balance increment on the "currencyTo" section
+    // This will basically animate the balance increment display on the "convertCurrency" section
     setTimeout(() => setJustExchangedState(false), CONFIGS.APP.TIMEOUT_JUST_EXCHANGED);
-  }, [currencyTo, currencyBase, dispatch, fromAmountValue, toAmountValue]);
+  }, [activeCurrency, amountFromValue, amountToValue, convertCurrency, dispatch]);
 
   return (
     <>
@@ -58,14 +51,14 @@ export function CurrencyTo() {
 
       <CurrencySelection
         type='to'
-        currencyBase={currencyBase}
-        currencyTo={currencyTo}
-        setLocalCurrency={setCurrencyActiveTo}
+        activeCurrency={activeCurrency}
+        convertCurrency={convertCurrency}
+        changeActiveCurrency={setCurrencyActiveTo}
         justExchanged={justExchangedState}
       >
         <button
           type='submit'
-          disabled={Boolean(!fromAmountValue || !hasMinimumAmount || hasBalanceExceeded)}
+          disabled={Boolean(!amountFromValue || !hasMinimumAmount || hasBalanceExceeded)}
           className={styles.exchangeAction}
           onClick={handleExchangeAction}
         > {CONFIGS.APP.TRANSLATIONS?.EXCHANGE_ACTION} </button>

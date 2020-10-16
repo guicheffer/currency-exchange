@@ -23,7 +23,7 @@ export const BalanceDisplay: FunctionComponent<BalanceDisplayProps> = ({
   currency,
   justExchanged = false,
 }): ReactElement => {
-  const isTypeFrom = useMemo(() => type === 'from', [type]);
+  const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
   const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
 
@@ -32,18 +32,18 @@ export const BalanceDisplay: FunctionComponent<BalanceDisplayProps> = ({
 
   return (
     <section className={styles.display}>
-      <p className={`${styles.balance} ${!isTypeFrom && justExchanged ? styles.balanceJustExchanged : ''}`}>
+      <p className={`${styles.balance} ${!isSelectionTypeFrom && justExchanged ? styles.balanceJustExchanged : ''}`}>
         {CONFIGS.APP.TRANSLATIONS?.BALANCE}: {formatAmount(currencyBalance, currency)}
       </p>
 
       {/* This will display a "balance exceeded" info when amount value */}
       {
-        isTypeFrom && hasBalanceExceeded && <p> {CONFIGS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
+        isSelectionTypeFrom && hasBalanceExceeded && <p> {CONFIGS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
       }
 
       {/* This will display a "minimum amount is..." warning */}
       {
-        isTypeFrom && !hasMinimumAmount &&
+        isSelectionTypeFrom && !hasMinimumAmount &&
         <p className={`${styles.warning}`}>
           {CONFIGS.APP.TRANSLATIONS?.MINIMUM_EXPECTED} {formatAmount(CONFIGS.APP.CURRENCIES[currency].minimum, currency)}
         </p>

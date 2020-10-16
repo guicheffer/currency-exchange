@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CurrencySelectionType, setAmountValue } from '../../../store/amounts/amounts.slices';
 import { getBalanceExceeded } from '../../../store/balances/balances.selectors';
 import { getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
-import { getFromAmountValue, getMinimumAmountToExchange, getToAmountValue } from '../../../store/amounts/amounts.selectors';
+import { getAmountFrom, getMinimumAmountToExchange, getAmountTo } from '../../../store/amounts/amounts.selectors';
 import { maskAmountValue, removeMaskFromInputValue } from '../../../commons/utils/format-amount/format-amount';
 import CONFIGS from '../../../app/configs';
 import hasCharInValuePosition from '../../../commons/utils/has-char-in-value-position/has-char-in-value-position';
@@ -27,18 +27,18 @@ type AmountInputProps = {
 export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): ReactElement => {
   const dispatch = useDispatch();
 
-  const isTypeFrom = useMemo(() => type === 'from', [type]);
+  const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
 
   const currencyBase = useSelector(getExchangeIsoActiveFrom);
   const currencyTo = useSelector(getExchangeIsoActiveTo);
-  const currentAmount = useSelector(isTypeFrom ? getFromAmountValue : getToAmountValue);
+  const currentAmount = useSelector(isSelectionTypeFrom ? getAmountFrom : getAmountTo);
 
   const hasBalanceExceeded = useSelector(getBalanceExceeded);
   const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
 
   // This will make a auto focus in case one of the currencies selection change
-  const fromAmountInput = useRef<HTMLInputElement>(null);
-  useEffect(() => fromAmountInput.current?.focus(), [currencyBase, currencyTo]);
+  const amountFromInput = useRef<HTMLInputElement>(null);
+  useEffect(() => amountFromInput.current?.focus(), [currencyBase, currencyTo]);
 
   const handleAmountChange = useCallback((event: SyntheticEvent<HTMLInputElement>): void => {
     const inputValue = event.currentTarget.value;
@@ -91,11 +91,11 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
     <>
       <input
         type='text'
-        ref={isTypeFrom ? fromAmountInput : null}
+        ref={isSelectionTypeFrom ? amountFromInput : null}
         inputMode='decimal'
-        autoFocus={isTypeFrom}
+        autoFocus={isSelectionTypeFrom}
         maxLength={Number.MAX_SAFE_INTEGER.toString().length}
-        className={`${styles.amount} ${isTypeFrom && (hasBalanceExceeded || !hasMinimumAmount) ? styles.amount__balanceExceeded : ''}`}
+        className={`${styles.amount} ${isSelectionTypeFrom && (hasBalanceExceeded || !hasMinimumAmount) ? styles.amount__balanceExceeded : ''}`}
         placeholder='0'
         onChange={handleAmountChange}
         onKeyPress={handleKeyPress}

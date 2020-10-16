@@ -1,38 +1,48 @@
 import { createSelector } from 'reselect';
 
-import { AmountValueState } from './amounts.slices';
+import { defaultAmountState } from './amounts.slices';
 import { getActiveExchange, getExchangeIsoActiveFrom } from '../exchange/exchange.selectors';
 import { getCurrentRate } from '../exchange/rates/rates.selectors';
 import { RootState } from '../store';
 import CONFIGS from '../../app/configs';
 import roundDown from '../../commons/utils/round-down/round-down';
 
-const DEFAULT_EMPTY_AMOUNT_VALUE: AmountValueState = { value: null };
+export const getAmountFromRawValue = createSelector(
+  (state: RootState) => state,
+  (state) => state.amounts.from.value,
+);
 
-export const getFromAmountValue = createSelector(
+export const getAmountToRawValue = createSelector(
+  (state: RootState) => state,
+  (state) => state.amounts.to.value,
+);
+
+export const getAmountFrom = createSelector(
   (state: RootState) => state,
   (state) => getActiveExchange(state),
   (state) => getCurrentRate(state),
   (state, active, currentRate) => {
-    const fromAmountValue = state.amounts.from.amount.value;
-    const toAmountValue = state.amounts.to.amount.value;
-    if (active === 'from' || !toAmountValue) return fromAmountValue ? state.amounts.from.amount : DEFAULT_EMPTY_AMOUNT_VALUE;
+    const amountFrom = state.amounts.from;
+    const amountTo = state.amounts.to;
 
-    // TODO: Change "amountValue" from strings
-    return { value: roundDown(toAmountValue / currentRate) };
+    if (active === 'from' || !amountTo.value) return amountFrom.value ? amountFrom : defaultAmountState;
+
+    const value = roundDown(amountTo.value / currentRate);
+    return { value };
   }
 );
 
-export const getToAmountValue = createSelector(
+export const getAmountTo = createSelector(
   (state: RootState) => state,
   (state) => getActiveExchange(state),
   (state) => getCurrentRate(state),
   (state, active, currentRate) => {
-    const fromAmountValue = state.amounts.from.amount.value;
-    const toAmountValue = state.amounts.to.amount.value;
-    if (active === 'to' || !fromAmountValue) return toAmountValue ? state.amounts.to.amount : DEFAULT_EMPTY_AMOUNT_VALUE;
+    const amountFrom = state.amounts.from;
+    const amountTo = state.amounts.to;
 
-    return { value: roundDown(fromAmountValue * currentRate) };
+    if (active === 'to' || !amountFrom.value) return amountTo.value ? amountTo : defaultAmountState;
+
+    return { value: roundDown(amountFrom.value * currentRate) };
   }
 );
 
@@ -40,7 +50,7 @@ export const getMinimumAmountToExchange = createSelector(
   (state: RootState) => state,
   (state) => getExchangeIsoActiveFrom(state),
   (state, currency) => {
-    if (!state.amounts.from.amount.value) return true;
-    return state.amounts.from.amount.value >= CONFIGS.APP.CURRENCIES[currency].minimum;
+    if (!state.amounts.from.value) return true;
+    return state.amounts.from.value >= CONFIGS.APP.CURRENCIES[currency].minimum;
   },
 );

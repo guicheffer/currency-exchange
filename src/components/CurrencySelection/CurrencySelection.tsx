@@ -11,46 +11,49 @@ import CONFIGS from '../../app/configs';
 import styles from './CurrencySelection.module.scss';
 
 interface CurrencySelectionProps {
-  currencyBase: CurrencySchema['iso'];
-  currencyTo: CurrencySchema['iso'];
-  setLocalCurrency: Function;
   type: CurrencySelectionType;
+  activeCurrency: CurrencySchema['iso'];
+  convertCurrency: CurrencySchema['iso'];
+  changeActiveCurrency: Function;
   justExchanged?: Boolean;
 }
 
-export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
-  type,
-  children,
-  currencyBase,
-  currencyTo,
-  setLocalCurrency,
-  justExchanged = false,
-}): ReactElement => {
+export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({ children, ...props }): ReactElement => {
+  const {
+    type,
+    activeCurrency,
+    convertCurrency,
+    changeActiveCurrency,
+    justExchanged = false,
+  } = props;
+
   const dispatch = useDispatch();
-  const isTypeFrom = useMemo(() => type === 'from', [type]);
+
+  const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
 
   const handleSelection = (event: React.SyntheticEvent<HTMLSelectElement>) => {
-    const selectedIso = event.currentTarget.value;
+    const selectedCurrency = event.currentTarget.value;
 
-    // TODO: Dispatch polling from `fromAmount` as the `base` currency for our rates
-    // TODO: Do we do that here?
+    // TODO: Dispatch polling from `amountFrom` as the `base` currency for our rates
 
-    if (selectedIso === currencyTo) {
+    // If selected currency is the same as the one to convert, invert them;
+    // Otherwise , change its active currency to the one selected.
+    if (convertCurrency === selectedCurrency) {
       dispatch(reverseCurrencies());
     } else {
-      dispatch(setLocalCurrency(selectedIso));
+      dispatch(changeActiveCurrency(selectedCurrency));
     }
   };
 
   return (
     <section className={`${styles.row} currency-exchange-section currency-exchange-section--${type}`}>
-      <div className={`container ${!isTypeFrom ? 'container__to' : ''}`}>
+      <div className={`container ${!isSelectionTypeFrom ? 'container__to' : ''}`}>
         <form
           autoComplete='off'
           className={styles.selection}
           onSubmit={e => e.preventDefault()}
         >
-          <select value={currencyBase} className={styles.currency} onChange={handleSelection}>
+          <select value={activeCurrency} className={styles.currency} onChange={handleSelection}>
             {
               Object.entries(CONFIGS.APP.CURRENCIES).map(
                 ([currencyIndexKey, { iso, key }]) => {
@@ -65,7 +68,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({
 
         <BalanceDisplay
           type={type}
-          currency={currencyBase}
+          currency={activeCurrency}
           justExchanged={justExchanged}
         />
       </div>

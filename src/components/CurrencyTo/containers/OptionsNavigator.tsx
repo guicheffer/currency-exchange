@@ -18,12 +18,12 @@ export function OptionsNavigator() {
 
   const handleSwitch = useCallback(() => dispatch(reverseCurrencies()), [dispatch]);
 
-  // This will display the correct rate info (e.g. £ 1 = € 1.17)
-  const rateTextInfoPack = [
-    /* £ */     CONFIGS.APP.CURRENCIES[currencyBase].symbol,
-    /* 1 */     CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_BASE_AMOUNT,
-    /* = */     CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_COMPARISON_SYMBOL,
-    /* € */     CONFIGS.APP.CURRENCIES[currencyTo].symbol,
+  // This will display the correct rate info (e.g. "£ 1 = € 1.17")
+  const rateTextInfoItems = [
+    /*  £   */  CONFIGS.APP.CURRENCIES[currencyBase].symbol,
+    /*  1   */  CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_BASE_AMOUNT,
+    /*  =   */  CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_COMPARISON_SYMBOL,
+    /*  €   */  CONFIGS.APP.CURRENCIES[currencyTo].symbol,
     /* 1.29 */  roundDown(currentRate).toFixed(CONFIGS.APP.MAX_FRACTION_DIGITS),
   ];
 
@@ -41,7 +41,9 @@ export function OptionsNavigator() {
 
         {/* Current Rate based on the current base currency */}
         <span className={styles.rateText}>
-          {rateTextInfoPack.join(' ')}
+          {rateTextInfoItems.join(' ')}
+
+          {/* This will show a smaller version of the last two digits of current rate */}
           <small>{getLastTwoDigits(currentRate)}</small>
         </span>
       </div>

@@ -1,22 +1,20 @@
 import { CurrencySchema } from '../../../app/currencies';
 import CONFIGS from '../../../app/configs';
 
-import {
-  AmountValueState,
-  CurrencySelectionType,
-} from '../../../store/amounts/amounts.slices';
+import { AmountSet } from '../../../store/amounts/amounts.slices'
+import { CurrencySelectionType } from '../../../store/amounts/amounts.slices';
 
 const CONFIGS_MAX_FRACTION_DIGITS = CONFIGS.APP.MAX_FRACTION_DIGITS;
 const CONFIGS_MIN_FRACTION_DIGITS = CONFIGS.APP.MIN_FRACTION_DIGITS;
 const CONFIGS_MAX_FRACTION_DIGITS_BTC = CONFIGS.APP.MAX_FRACTION_DIGITS_BTC;
 
-export const formatAmount = (amount: number, currency?: CurrencySchema['iso'] ) => {
+export const formatAmount = (amountValue: number, currency?: CurrencySchema['iso'] ) => {
   // This will rely on users' native language when currency is passed (for balance purposes)
   // Likewise, for users' input on the amount value, format will remain the same
   const locale = currency ? navigator.language : CONFIGS.APP.LOCALE_STRING;
   const payload = currency ? { currency, style: 'currency' } : { style: 'decimal' };
 
-  const formattedAmount = amount.toLocaleString(locale, {
+  const formattedAmount = amountValue.toLocaleString(locale, {
     ...payload,
     minimumFractionDigits: CONFIGS_MIN_FRACTION_DIGITS,
 
@@ -32,16 +30,13 @@ export const formatAmount = (amount: number, currency?: CurrencySchema['iso'] ) 
   return formattedAmount.replace(currency, CONFIGS.APP.CURRENCIES[currency].symbol);
 }
 
-export const maskAmountValue = ({
-  hasDecimalsStarted,
-  hasZeroAfterComma,
-  value,
-}: AmountValueState, type: CurrencySelectionType) => {
+export const maskAmountValue = ({ value, options = {} }: AmountSet, type: CurrencySelectionType) => {
   if (value === null || Number.isNaN(value)) return '';
 
   const symbolPrefix = value ? `${CONFIGS.APP.AMOUNT.SYMBOLS[type]} ` : '';
   const formattedAmount = formatAmount(value);
 
+  const { hasDecimalsStarted, hasZeroAfterComma } = options;
   let requiredSuffix = '';
   requiredSuffix = hasDecimalsStarted ? ',' : '';
   requiredSuffix += hasZeroAfterComma ? ',0' : '';

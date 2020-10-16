@@ -6,15 +6,15 @@ import { getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../store/ex
 import { setCurrencyActiveFrom } from '../../store/exchange/exchange.slices';
 
 export function CurrencyFrom() {
-  const currencyBase = useSelector(getExchangeIsoActiveFrom);
-  const currencyTo = useSelector(getExchangeIsoActiveTo);
+  const activeCurrency = useSelector(getExchangeIsoActiveFrom);
+  const convertCurrency = useSelector(getExchangeIsoActiveTo);
 
   return (
     <CurrencySelection
       type='from'
-      currencyBase={currencyBase}
-      currencyTo={currencyTo}
-      setLocalCurrency={setCurrencyActiveFrom}
+      activeCurrency={activeCurrency}
+      convertCurrency={convertCurrency}
+      changeActiveCurrency={setCurrencyActiveFrom}
     />
   );
 }
