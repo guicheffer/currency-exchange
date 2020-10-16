@@ -17,8 +17,8 @@ export const getAmountFrom = createSelector(
 
     if (active === 'from' || !amountTo.value) return amountFrom.value ? amountFrom : defaultAmountState;
 
-    // The other way around does not round rate down since it's a opposite budget exchange
-    return { value: amountTo.value / currentRate };
+    const value = amountTo.value / roundDown(currentRate);
+    return { value };
   }
 );
 

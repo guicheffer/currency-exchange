@@ -32,14 +32,8 @@ export function OptionsNavigator() {
 
   const handleSwitch = useCallback(() => {
     dispatch(reverseCurrencies());
-
     dispatch(setActiveExchange(oppositeSelectionType));
-
-    if (isActiveTypeFrom) {
-      dispatch(setAmountTo(amountFrom));
-    } else {
-      dispatch(setAmountFrom(amountTo));
-    }
+    dispatch(isActiveTypeFrom ? setAmountTo(amountFrom) : setAmountFrom(amountTo));
   }, [amountFrom, amountTo, dispatch, isActiveTypeFrom, oppositeSelectionType]);
 
   // This will display the correct rate info (e.g. "£ 1 = € 1.17")
