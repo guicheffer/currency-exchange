@@ -98,5 +98,6 @@ $_nav_bubble_size: 4vh;
 
   @media (max-width: $screen-sm-min) {
     bottom: 4 * $base-design-unit;
+    width: 70%;
   }
 }
