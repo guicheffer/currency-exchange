@@ -36,10 +36,10 @@ export const maskAmountValue = ({ value, options = {} }: AmountSet, type: Curren
   const symbolPrefix = value ? `${CONFIGS.APP.AMOUNT.SYMBOLS[type]} ` : '';
   const formattedAmount = formatAmount(value);
 
-  const { hasDecimalsStarted, hasZeroAfterComma } = options;
+  const { hasDecimalsStarted, hasZeroRightAfterComma } = options;
   let requiredSuffix = '';
   requiredSuffix = hasDecimalsStarted ? ',' : '';
-  requiredSuffix += hasZeroAfterComma ? ',0' : '';
+  requiredSuffix += hasZeroRightAfterComma ? ',0' : '';
 
   return `${symbolPrefix}${formattedAmount}${requiredSuffix}`;
 }

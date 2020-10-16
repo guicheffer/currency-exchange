@@ -5,15 +5,15 @@ import { getAmountFrom } from '../amounts/amounts.selectors';
 import { getExchangeIsoActiveFrom } from '../exchange/exchange.selectors';
 import { RootState } from '../store';
 
+export const getCurrencyBalance = createSelector(
+  (state: RootState) => state,
+  (_: any, currency: CurrencySchema['iso']) => currency,
+  (state, currency) => state.balances[currency],
+);
+
 export const getBalanceExceeded = createSelector(
   (state: RootState) => state,
   (state) => getExchangeIsoActiveFrom(state),
   (state) => getAmountFrom(state),
   (state, currency, { value }) => (value && value > getCurrencyBalance(state, currency)) ?? null,
-);
-
-export const getCurrencyBalance = createSelector(
-  (state: RootState) => state,
-  (_: any, currency: CurrencySchema['iso']) => currency,
-  (state, currency) => state.balances[currency],
 );

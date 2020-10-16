@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { RootState } from '../store';
 
-export const getActiveExchange = createSelector(
+export const getActiveSelectionType = createSelector(
   (state: RootState) => state,
   (state) => state.exchange.active,
 );

@@ -31,17 +31,17 @@ Please execute that in order to be aware of what commands you might be able to r
 
 ## Ideas on how to improve
 
-- [ ] Architectural <br/>
-  Many things here could have been improved such as folder structures. (...)
+- [ ] **Architectural** <br/>
+  > Many things here could have been improved such as folder structures, api calls, error handling, logs, etc;
   - [ ] (...)
-- [ ] Acessibility <br/>
-  This application is not very acessible since I did not want to spend a lot of time improving it since I assumed my architecture skills should be taken into account more than reckon with accessibility related stuff.
+- [ ] **Acessibility** <br/>
+  > This application is not very acessible since I did not want to spend a lot of time improving it since I assumed my architecture skills should be taken into account more than reckon with accessibility related stuff.
   - [ ] (...)
-- [ ] Performance <br/>
+- [ ] **Performance** <br/>
   - [ ] (...)
-- [ ] Reusable code <br/>
-  I'm not very prod of the usage of styles module across the application, this could have been better refactored in order to reuse cascades and their childs in different parts of components containers.
-  - [ ] Storybook
+- [ ] **Reusable Code** <br/>
+  > I'm not very prod of the usage of styles module across the application, this could have been better refactored in order to reuse cascades and their childs in different parts of components containers.
+  - [ ] **Storybook**
 
 ## Learn More
 

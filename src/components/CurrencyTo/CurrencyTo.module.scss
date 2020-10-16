@@ -54,9 +54,12 @@ $_nav_bubble_size: 4vh;
   border-radius: 2 * $base-design-unit;
   height: $_nav_bubble_size / 2;
   left: 50%;
+  max-width: 9999px;
   padding: ($base-design-unit / 1.3) (1.3 * $base-design-unit);
   top: $_nav_bubble_size / -2.5;
   transform: translateX(-50%);
+  transition: width 2s ease-out;
+  width: auto;
 
   @media (max-width: $screen-sm-min) { padding-top: 0; }
 }

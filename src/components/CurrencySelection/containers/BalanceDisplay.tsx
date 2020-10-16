@@ -24,8 +24,9 @@ export const BalanceDisplay: FunctionComponent<BalanceDisplayProps> = ({
   justExchanged = false,
 }): ReactElement => {
   const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
-  const hasBalanceExceeded = useSelector(getBalanceExceeded);
-  const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
+
+  const hasBalanceExceededValue = useSelector(getBalanceExceeded);
+  const hasMinimumAmountValue = useSelector(getMinimumAmountToExchange);
 
   const selectCurrencyBalance = useMemo(makeGetCurrencyBalance, []);
   const currencyBalance = useSelector((state: RootState) => selectCurrencyBalance(state, currency));
@@ -38,12 +39,12 @@ export const BalanceDisplay: FunctionComponent<BalanceDisplayProps> = ({
 
       {/* This will display a "balance exceeded" info when amount value */}
       {
-        isSelectionTypeFrom && hasBalanceExceeded && <p> {CONFIGS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
+        isSelectionTypeFrom && hasBalanceExceededValue && <p> {CONFIGS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
       }
 
       {/* This will display a "minimum amount is..." warning */}
       {
-        isSelectionTypeFrom && !hasMinimumAmount &&
+        isSelectionTypeFrom && !hasMinimumAmountValue &&
         <p className={`${styles.warning}`}>
           {CONFIGS.APP.TRANSLATIONS?.MINIMUM_EXPECTED} {formatAmount(CONFIGS.APP.CURRENCIES[currency].minimum, currency)}
         </p>

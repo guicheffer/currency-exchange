@@ -10,10 +10,11 @@ import React, {
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { CurrencySelectionType, setAmountValue } from '../../../store/amounts/amounts.slices';
-import { getBalanceExceeded } from '../../../store/balances/balances.selectors';
-import { getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
+import { CurrencySelectionType, defaultAmountState, setAmountValue } from '../../../store/amounts/amounts.slices';
 import { getAmountFrom, getMinimumAmountToExchange, getAmountTo } from '../../../store/amounts/amounts.selectors';
+import { getBalanceExceeded } from '../../../store/balances/balances.selectors';
+import { setActiveExchange } from '../../../store/exchange/exchange.slices';
+import { getActiveSelectionType, getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
 import { maskAmountValue, removeMaskFromInputValue } from '../../../commons/utils/format-amount/format-amount';
 import CONFIGS from '../../../app/configs';
 import hasCharInValuePosition from '../../../commons/utils/has-char-in-value-position/has-char-in-value-position';
@@ -28,37 +29,43 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
   const dispatch = useDispatch();
 
   const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
+  const activeSelectionType = useSelector(getActiveSelectionType);
+  const oppositeSelectionType = isSelectionTypeFrom ? 'to' : 'from';
 
   const currencyBase = useSelector(getExchangeIsoActiveFrom);
   const currencyTo = useSelector(getExchangeIsoActiveTo);
   const currentAmount = useSelector(isSelectionTypeFrom ? getAmountFrom : getAmountTo);
 
-  const hasBalanceExceeded = useSelector(getBalanceExceeded);
-  const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
+  const hasBalanceExceededValue = useSelector(getBalanceExceeded);
+  const hasMinimumAmountValue = useSelector(getMinimumAmountToExchange);
 
   // This will make a auto focus in case one of the currencies selection change
   const amountFromInput = useRef<HTMLInputElement>(null);
   useEffect(() => amountFromInput.current?.focus(), [currencyBase, currencyTo]);
 
+  const handleFocus = useCallback((): void => {
+    dispatch(setActiveExchange(type));
+    dispatch(setAmountValue[type](currentAmount));
+    dispatch(setAmountValue[oppositeSelectionType](defaultAmountState));
+  }, [currentAmount, dispatch, oppositeSelectionType, type]);
+
   const handleAmountChange = useCallback((event: SyntheticEvent<HTMLInputElement>): void => {
     const inputValue = event.currentTarget.value;
     const inputValueWithoutMask = removeMaskFromInputValue(inputValue);
-    const rawValue = parseFloat(inputValueWithoutMask);
+    const rawValue = parseFloat(inputValueWithoutMask); // TODO: trailling zero
     const value = !Number.isNaN(rawValue) ? rawValue : null;
 
     const hasDecimalsStarted = hasCharInValuePosition(inputValue, ',', 1);
-    const hasZeroAfterComma = hasCharInValuePosition(inputValue, ',', 2) && hasCharInValuePosition(inputValue, '0', 1);
+    const hasZeroRightAfterComma = hasCharInValuePosition(inputValue, ',', 2) && hasCharInValuePosition(inputValue, '0', 1);
 
     dispatch(setAmountValue[type]({
       hasDecimalsStarted,
-      hasZeroAfterComma,
+      hasZeroRightAfterComma,
       value,
     }));
   }, [dispatch, type]);
 
-  const handleKeyPress = useCallback((
-    event: KeyboardEvent<HTMLInputElement>,
-  ): void => {
+  const handleKeyPress = useCallback((event: KeyboardEvent<HTMLInputElement>): void => {
     const amountValue = event.currentTarget.value;
 
     const pressedKeyString = String.fromCharCode(event.which);
@@ -91,12 +98,13 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
     <>
       <input
         type='text'
-        ref={isSelectionTypeFrom ? amountFromInput : null}
+        ref={activeSelectionType === type ? amountFromInput : null}
         inputMode='decimal'
-        autoFocus={isSelectionTypeFrom}
+        autoFocus={activeSelectionType === type}
         maxLength={Number.MAX_SAFE_INTEGER.toString().length}
-        className={`${styles.amount} ${isSelectionTypeFrom && (hasBalanceExceeded || !hasMinimumAmount) ? styles.amount__balanceExceeded : ''}`}
+        className={`${styles.amount} ${isSelectionTypeFrom && (hasBalanceExceededValue || !hasMinimumAmountValue) ? styles.amount__balanceExceeded : ''}`}
         placeholder='0'
+        onFocus={handleFocus}
         onChange={handleAmountChange}
         onKeyPress={handleKeyPress}
         onPaste={e => e.preventDefault()}

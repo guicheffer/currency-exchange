@@ -24,8 +24,8 @@ export function CurrencyTo() {
   const activeCurrency = useSelector(getExchangeIsoActiveTo);
   const convertCurrency = useSelector(getExchangeIsoActiveFrom);
 
-  const hasBalanceExceeded = useSelector(getBalanceExceeded);
-  const hasMinimumAmount = useSelector(getMinimumAmountToExchange);
+  const hasBalanceExceededValue = useSelector(getBalanceExceeded);
+  const hasMinimumAmountValue = useSelector(getMinimumAmountToExchange);
 
   const selectGetFromAmountValue = useMemo(makeGetFromAmountValue, []);
   const amountFromValue = useSelector(selectGetFromAmountValue)?.value as number;
@@ -58,7 +58,7 @@ export function CurrencyTo() {
       >
         <button
           type='submit'
-          disabled={Boolean(!amountFromValue || !hasMinimumAmount || hasBalanceExceeded)}
+          disabled={Boolean(!amountFromValue || !hasMinimumAmountValue || hasBalanceExceededValue)}
           className={styles.exchangeAction}
           onClick={handleExchangeAction}
         > {CONFIGS.APP.TRANSLATIONS?.EXCHANGE_ACTION} </button>

@@ -1,13 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { beautifyCurrentRate, getLastTwoDigits } from '../../../commons/utils/display-current-rate/display-current-rate';
+import { getAmountFrom, getAmountTo } from '../../../store/amounts/amounts.selectors';
 import { getCurrentRate } from '../../../store/exchange/rates/rates.selectors';
-import { getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
-import { reverseCurrencies } from '../../../store/exchange/exchange.slices';
+import { getActiveSelectionType, getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
+import { reverseCurrencies, setActiveExchange } from '../../../store/exchange/exchange.slices';
+import { setAmountFrom, setAmountTo } from '../../../store/amounts/amounts.slices';
 import CONFIGS from '../../../app/configs';
-import getLastTwoDigits from '../../../commons/utils/get-last-two-digits/get-last-two-digits';
 import styles from '../CurrencyTo.module.scss';
-import roundDown from '../../../commons/utils/round-down/round-down';
+
+const makeGetFromAmountValue = () => getAmountFrom;
+const makeGetToAmountValue = () => getAmountTo;
 
 export function OptionsNavigator() {
   const dispatch = useDispatch();
@@ -16,7 +20,27 @@ export function OptionsNavigator() {
   const currencyTo = useSelector(getExchangeIsoActiveTo);
   const currentRate = useSelector(getCurrentRate);
 
-  const handleSwitch = useCallback(() => dispatch(reverseCurrencies()), [dispatch]);
+  const activeSelectionType = useSelector(getActiveSelectionType);
+  const isActiveTypeFrom = useMemo(() => activeSelectionType === 'from', [activeSelectionType]);
+  const oppositeSelectionType = activeSelectionType === 'from' ? 'to' : 'from';
+
+  const selectGetFromAmountValue = useMemo(makeGetFromAmountValue, []);
+  const amountFrom = useSelector(selectGetFromAmountValue);
+
+  const selectGetToAmountValue = useMemo(makeGetToAmountValue, []);
+  const amountTo = useSelector(selectGetToAmountValue);
+
+  const handleSwitch = useCallback(() => {
+    dispatch(reverseCurrencies());
+
+    dispatch(setActiveExchange(oppositeSelectionType));
+
+    if (isActiveTypeFrom) {
+      dispatch(setAmountTo(amountFrom));
+    } else {
+      dispatch(setAmountFrom(amountTo));
+    }
+  }, [amountFrom, amountTo, dispatch, isActiveTypeFrom, oppositeSelectionType]);
 
   // This will display the correct rate info (e.g. "£ 1 = € 1.17")
   const rateTextInfoItems = [
@@ -24,7 +48,7 @@ export function OptionsNavigator() {
     /*  1   */  CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_BASE_AMOUNT,
     /*  =   */  CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_COMPARISON_SYMBOL,
     /*  €   */  CONFIGS.APP.CURRENCIES[currencyTo].symbol,
-    /* 1.29 */  roundDown(currentRate).toFixed(CONFIGS.APP.MAX_FRACTION_DIGITS),
+    /* 1.29 */  beautifyCurrentRate(currentRate),
   ];
 
   return (

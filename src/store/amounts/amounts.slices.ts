@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type AmountOptions = {
   hasDecimalsStarted?: boolean;
-  hasZeroAfterComma?: boolean;
+  hasZeroRightAfterComma?: boolean;
 }
 
 export type CurrencySelectionType = 'from' | 'to';
@@ -45,6 +45,6 @@ const setAmountValue = {
   from: setAmountFrom,
   to: setAmountTo,
 };
-export { clearAmountValues, setAmountValue };
+export { clearAmountValues, setAmountFrom, setAmountTo, setAmountValue };
 
 export default amountsSlice.reducer;
