@@ -14,9 +14,9 @@ const initialState: ExchangeState = {
   // TODO: Organize base currency (Base = GBP)
 
   [CONFIGS.APP.CURRENCIES.btc.key]: 0.1018,
-  [CONFIGS.APP.CURRENCIES.eur.key]: 1.1009,
+  [CONFIGS.APP.CURRENCIES.eur.key]: 1.1750,
   [CONFIGS.APP.CURRENCIES.usd.key]: 1.2903,
-  [CONFIGS.APP.CURRENCIES.gbp.key]: 0.9077,
+  [CONFIGS.APP.CURRENCIES.gbp.key]: 0.8510,
 };
 
 export const ratesSlice = createSlice({
