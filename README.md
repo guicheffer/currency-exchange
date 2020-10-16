@@ -2,6 +2,8 @@
 
 This is a mini app playground to display currency exchange in React + Redux + Redux-Saga and TypeScript.
 
+<!-- TODO: Insert .gif here -->
+
 ## Available Scripts
 
 In the project directory, you can run:

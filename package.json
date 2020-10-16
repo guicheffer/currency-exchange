@@ -24,16 +24,24 @@
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.0",
     "@types/react-redux": "7.1.7",
-    "http-server": "^0.12.3",
+    "http-server": "0.12.3",
+    "koa": "2.13.0",
+    "koa-router": "9.4.0",
+    "node-fetch": "2.6.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "7.2.0",
     "react-scripts": "3.4.3",
     "reselect": "4.0.0",
-    "typescript": "3.8.2"
+    "typescript": "4.0.3"
   },
   "devDependencies": {
-    "node-sass": "4.14.1"
+    "@types/koa": "2.11.5",
+    "@types/koa-router": "7.4.1",
+    "@types/node-fetch": "2.5.7",
+    "node-sass": "4.14.1",
+    "nodemon": "2.0.5",
+    "ts-node": "9.0.0"
   },
   "engineStrict": true,
   "engines": {
@@ -41,6 +49,7 @@
     "yarn": "1.*"
   },
   "scripts": {
+    "api": "nodemon --watch 'server/api/*' -e ts --exec ts-node --project server/tsconfig.json server/api/index.ts",
     "start": "$npm_package_var_runner start",
     "build": "$npm_package_var_runner build",
     "test": "$npm_package_var_runner test",

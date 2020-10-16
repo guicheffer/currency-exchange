@@ -23,9 +23,14 @@ serve: ## build environment based
 	$(PKG) build
 	$(PKG) serve
 
+run-api: ## run currency exchange api
+	make install
+	$(PKG) api
+
 i: install
 dev: start
 
+api: run-api
 deploy: serve
 build: serve
 prod: serve
