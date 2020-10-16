@@ -33,10 +33,11 @@ export const formatAmount = (amountValue: number, currency?: CurrencySchema['iso
 export const maskAmountValue = ({ value, options = {} }: AmountSet, type: CurrencySelectionType) => {
   if (value === null || Number.isNaN(value)) return '';
 
-  const symbolPrefix = value ? `${CONFIGS.APP.AMOUNT.SYMBOLS[type]} ` : '';
+  const symbolPrefix = value !== null ? `${CONFIGS.APP.AMOUNT.SYMBOLS[type]} ` : '';
   const formattedAmount = formatAmount(value);
 
   const { hasDecimalsStarted, hasZeroRightAfterComma } = options;
+
   let requiredSuffix = '';
   requiredSuffix = hasDecimalsStarted ? ',' : '';
   requiredSuffix += hasZeroRightAfterComma ? ',0' : '';

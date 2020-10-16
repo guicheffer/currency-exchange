@@ -15,7 +15,7 @@ export const getAmountFrom = createSelector(
     const amountFrom = state.amounts.from;
     const amountTo = state.amounts.to;
 
-    if (active === 'from' || !amountTo.value) return amountFrom.value ? amountFrom : defaultAmountState;
+    if (active === 'from' || !amountTo.value) return amountFrom.value !== null ? amountFrom : defaultAmountState;
 
     const value = amountTo.value / roundDown(currentRate);
     return { value };
@@ -30,7 +30,7 @@ export const getAmountTo = createSelector(
     const amountFrom = state.amounts.from;
     const amountTo = state.amounts.to;
 
-    if (active === 'to' || !amountFrom.value) return amountTo.value ? amountTo : defaultAmountState;
+    if (active === 'to' || !amountFrom.value) return amountTo.value !== null ? amountTo : defaultAmountState;
 
     const value = amountFrom.value * roundDown(currentRate);
     return { value };

@@ -59,9 +59,11 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
     const hasZeroRightAfterComma = hasCharInValuePosition(inputValue, ',', 2) && hasCharInValuePosition(inputValue, '0', 1);
 
     dispatch(setAmountValue[type]({
-      hasDecimalsStarted,
-      hasZeroRightAfterComma,
       value,
+      options: {
+        hasDecimalsStarted,
+        hasZeroRightAfterComma,
+      },
     }));
   }, [dispatch, type]);
 
@@ -86,6 +88,7 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
     if (
       (amountValue === '' && pressedKeyString === ',') ||
       !allowedKeysRegex.test(pressedKeyString) ||
+      (pressedKeyString === ',' && amountValue.includes(',')) ||
 
       (amountValue &&
       !permittedValueRegex.test(amountValue) &&
@@ -97,7 +100,7 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
   return (
     <>
       <input
-        type='text'
+        type='tel'
         ref={activeSelectionType === type ? amountFromInput : null}
         inputMode='decimal'
         autoFocus={activeSelectionType === type}

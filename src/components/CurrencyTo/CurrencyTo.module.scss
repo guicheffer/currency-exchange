@@ -13,9 +13,12 @@ $_nav_bubble_size: 4vh;
   outline: none;
   transition: background-color .2s ease-out, color .1s linear;
 
-  &:active, &:hover { color: $white; }
-  &:hover { background-color: var(--exchange-button-bg-color-hover); }
-  &:active { background-color: var(--exchange-button-bg-color-pressed); }
+  // No hover styles on switch action for mobile phones
+  @media (min-width: $screen-sm-min) {
+    &:active, &:hover { color: $white; }
+    &:hover { background-color: var(--exchange-button-bg-color-hover); }
+    &:active { background-color: var(--exchange-button-bg-color-pressed); }
+  }
 }
 
 .navigation {

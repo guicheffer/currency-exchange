@@ -15,5 +15,5 @@ export const getBalanceExceeded = createSelector(
   (state: RootState) => state,
   (state) => getExchangeIsoActiveFrom(state),
   (state) => getAmountFrom(state),
-  (state, currency, { value }) => (value && value > getCurrencyBalance(state, currency)) ?? null,
+  (state, currency, { value }) => (value !== null && value > getCurrencyBalance(state, currency)) ?? null,
 );
