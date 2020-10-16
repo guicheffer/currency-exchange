@@ -1,4 +1,4 @@
-const hasCharInValuePosition = (
+const hasCharInValuePositionBeforeLength = (
   value: string,
   char: string,
   index: number,
@@ -6,4 +6,4 @@ const hasCharInValuePosition = (
   return char === value[value.length - index];
 };
 
-export default hasCharInValuePosition;
+export default hasCharInValuePositionBeforeLength;

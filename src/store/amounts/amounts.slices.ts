@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type AmountOptions = {
   hasDecimalsStarted?: boolean;
+  hasTrailingZero?: boolean;
   hasZeroRightAfterComma?: boolean;
 }
 

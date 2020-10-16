@@ -17,7 +17,7 @@ import { setActiveExchange } from '../../../store/exchange/exchange.slices';
 import { getActiveSelectionType, getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
 import { maskAmountValue, removeMaskFromInputValue } from '../../../commons/utils/format-amount/format-amount';
 import CONFIGS from '../../../app/configs';
-import hasCharInValuePosition from '../../../commons/utils/has-char-in-value-position/has-char-in-value-position';
+import hasCharInValuePositionBeforeLength from '../../../commons/utils/has-char-in-value-position/has-char-in-value-position';
 import styles from '../CurrencySelection.module.scss';
 
 type AmountInputProps = {
@@ -52,16 +52,18 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
   const handleAmountChange = useCallback((event: SyntheticEvent<HTMLInputElement>): void => {
     const inputValue = event.currentTarget.value;
     const inputValueWithoutMask = removeMaskFromInputValue(inputValue);
-    const rawValue = parseFloat(inputValueWithoutMask); // TODO: trailling zero
+    const rawValue = parseFloat(inputValueWithoutMask);
     const value = !Number.isNaN(rawValue) ? rawValue : null;
 
-    const hasDecimalsStarted = hasCharInValuePosition(inputValue, ',', 1);
-    const hasZeroRightAfterComma = hasCharInValuePosition(inputValue, ',', 2) && hasCharInValuePosition(inputValue, '0', 1);
+    const hasDecimalsStarted = hasCharInValuePositionBeforeLength(inputValue, ',', 1);
+    const hasTrailingZero = hasCharInValuePositionBeforeLength(inputValue, '0', 1);
+    const hasZeroRightAfterComma = hasCharInValuePositionBeforeLength(inputValue, ',', 2) && hasCharInValuePositionBeforeLength(inputValue, '0', 1);
 
     dispatch(setAmountValue[type]({
       value,
       options: {
         hasDecimalsStarted,
+        hasTrailingZero,
         hasZeroRightAfterComma,
       },
     }));
