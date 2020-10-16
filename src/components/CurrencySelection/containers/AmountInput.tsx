@@ -77,12 +77,13 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
     /*
      * The following conditions will, respectively:
      *
-     * - check if there's already an inserted comma or;
-     * - check if pressed key is actually a number or:
+     * - check if there's already an inserted comma, or:
+     * - check if pressed key is actually a number, or:
+     * - check if pressed key is a comma and if exists a comma already, or:
      *
-     * - check if there's a proper amount value and;
-     * - disallow pressed key if value is already consistent with its format (e.g. 12.345,56) and;
-     * - not disallow users from 'delete' key actions and;
+     * - check if there's a proper amount value, and:
+     * - disallow pressed key if value is already consistent with its format (e.g. 12.345,56), and:
+     * - not disallow users from 'delete' key actions, and:
      * - check has not selecteded something in the field to get it replaced.
     */
     if (
