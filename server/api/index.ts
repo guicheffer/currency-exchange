@@ -75,6 +75,7 @@ router.get('/:currency?(/)?', async (ctx) => {
 });
 
 app.use(router.routes());
-app.listen(3001);
 
-console.log('🔥 Server running on port 3001');
+const { API_PORT } = process.env;
+app.listen(API_PORT);
+console.log(`🔥 Server running on port ${API_PORT}`);
