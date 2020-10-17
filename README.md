@@ -6,7 +6,17 @@ This is a mini app playground to display currency exchange in React + Redux + Re
 - [The Proxy Api](http://currency-exchange-api.guicheffer.me/)
 - [The Real Fake Dummy Weird Api](http://currency-exchange-fake-api.guicheffer.me/BTC) (keep in mind these rates are from a week before)
 
-<!-- TODO: Insert .gif here -->
+## Summary
+
+- [Quick preview](#quick-preview)
+- [Available Scripts](#available-scripts)
+- [Preview *(screenshots)*](#preview)
+- [Ideas](#ideas)
+- [Learn more](#learn-more)
+
+## Quick preview
+
+![how app works](./docs/currency-exchange.gif)
 
 ## Available Scripts
 
@@ -43,10 +53,45 @@ Please execute that in order to be aware of what commands you might be able to r
 
 ## Preview
 
-### Balance increment
-(...)
+## Warnings messages
 
-## Ideas on how to improve
+#### 📷 &nbsp; Minimum amount
+![minimum amount message](./docs/minimum.png)
+
+#### 📷 &nbsp; Exceeding balance
+![balance puts "balance exceeds" message](./docs/balance-exceed.png)
+
+___
+
+## Forex rates updates
+
+This happens every 1s even though it could be techinically problematic
+
+![forex updated](./docs/forex-rates-updates.png)
+
+___
+
+### Balance related
+
+These following screenshots are related to balance features
+
+#### 📷 &nbsp; Balance update confirmation
+![balance update confirmation](./docs/balance-update-1.png)
+
+#### 📷 &nbsp; Balance update succeed
+![balance when update happens](./docs/balance-update-2.png)
+
+___
+
+### 📷 &nbsp; Failures
+
+Failures also display UI error handler messages
+
+![failures on UI](./docs/fail.png)
+
+___
+
+## Ideas
 
 - [ ] **UX** <br/>
   - I understand there's a big bug around converting from BTC to another currency;
@@ -65,4 +110,4 @@ Please execute that in order to be aware of what commands you might be able to r
 
 ## Learn More
 
-Visit my page on the web: [guicheffer.me](http://guicheffer.me)
+Visit my corner on the web: [guicheffer.me](http://guicheffer.me)
