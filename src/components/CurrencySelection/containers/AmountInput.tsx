@@ -56,7 +56,7 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
     const value = !Number.isNaN(rawValue) ? rawValue : null;
 
     const hasDecimalsStarted = hasCharInValuePositionBeforeLength(inputValue, ',', 1);
-    const hasTrailingZero = hasCharInValuePositionBeforeLength(inputValue, '0', 1);
+    const hasTrailingZero = hasCharInValuePositionBeforeLength(inputValue, '0', 1) && inputValue.includes(',') && !inputValue.includes(',0');
     const hasZeroRightAfterComma = hasCharInValuePositionBeforeLength(inputValue, ',', 2) && hasCharInValuePositionBeforeLength(inputValue, '0', 1);
 
     dispatch(setAmountValue[type]({
