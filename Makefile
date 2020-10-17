@@ -19,7 +19,7 @@ dev: ## start development
 	make install
 	$(PKG) start
 
-serve: ## build environment based
+start: ## build environment based
 	make install
 	$(PKG) build
 	$(PKG) serve
@@ -29,10 +29,10 @@ run-api: ## run currency exchange api
 	$(PKG) api
 
 api: run-api
-deploy: serve
-build: serve
-start: serve
-prod: serve
+deploy: start
+build: start
+serve: start
+prod: start
 production: prod
 
 test: test-stuff
