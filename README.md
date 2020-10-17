@@ -1,4 +1,4 @@
-# 💰 Currency Exchange Mini-App
+# 💰 [Currency Exchange Mini-App](http://currency-exchange.guicheffer.me/)
 
 This is a mini app playground to display currency exchange in React + Redux + Redux-Saga and TypeScript.
 
@@ -17,6 +17,8 @@ Make sure you manually open [http://localhost:3000](http://localhost:3000) to vi
 
 Builds the app for production to the `build` folder.<br />
 It correctly bundles React in production mode and optimizes the build for the best performance.
+
+**ps**. Remember you can also use production's URL directly [here](http://currency-exchange.guicheffer.me/).
 
 ### `make test-stuff`
 

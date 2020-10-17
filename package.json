@@ -49,7 +49,7 @@
     "yarn": "1.*"
   },
   "scripts": {
-    "api": "nodemon --watch 'server/api/*' -e ts --exec ts-node --project server/tsconfig.json server/api/index.ts",
+    "api": "API_PORT=3000 nodemon --watch 'server/api/*' -e ts --exec ts-node --project server/tsconfig.json server/api/index.ts",
     "start": "$npm_package_var_runner start",
     "build": "$npm_package_var_runner build",
     "test": "$npm_package_var_runner test",
