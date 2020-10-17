@@ -11,10 +11,11 @@ help:
 
 # ------------------------------------------------------------------------------------ #
 
+i: install
 install: ## install stuff
 	$(PKG) install
 
-start: ## start development
+dev: ## start development
 	make install
 	$(PKG) start
 
@@ -27,12 +28,10 @@ run-api: ## run currency exchange api
 	make install
 	$(PKG) api
 
-i: install
-dev: start
-
 api: run-api
 deploy: serve
 build: serve
+start: serve
 prod: serve
 production: prod
 

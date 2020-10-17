@@ -32,6 +32,11 @@
   flex: 1;
   text-align: right;
   width: 50%;
+
+  &[disabled] {
+    color: $_loading-disabled-color;
+    cursor: not-allowed;
+  }
 }
 
 .amount__balanceExceeded { color: $_secondary-color; }

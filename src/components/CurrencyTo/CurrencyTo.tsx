@@ -12,7 +12,7 @@ import { getAmountFrom, getMinimumAmountToExchange, getAmountTo } from '../../st
 import { setCurrencyActiveTo } from '../../store/exchange/exchange.slices';
 import CONFIGS from '../../app/configs';
 import styles from './CurrencyTo.module.scss';
-import { isPollingLoading } from '../../store/polling/polling.selectors';
+import { isPollingFailed, isPollingLoading } from '../../store/polling/polling.selectors';
 
 const makeGetFromAmountValue = () => getAmountFrom;
 const makeGetToAmountValue = () => getAmountTo;
@@ -28,6 +28,7 @@ export function CurrencyTo() {
   const hasBalanceExceededValue = useSelector(getBalanceExceeded);
   const hasMinimumAmountValue = useSelector(getMinimumAmountToExchange);
   const hasPollingLoading = useSelector(isPollingLoading);
+  const hasPollingFailed = useSelector(isPollingFailed);
 
   const selectGetFromAmountValue = useMemo(makeGetFromAmountValue, []);
   const amountFromValue = useSelector(selectGetFromAmountValue)?.value as number;
@@ -60,10 +61,17 @@ export function CurrencyTo() {
       >
         <button
           type='submit'
-          disabled={hasPollingLoading || !amountFromValue || !hasMinimumAmountValue || hasBalanceExceededValue}
+          disabled={
+            !amountFromValue ||
+            !hasMinimumAmountValue ||
+            hasPollingLoading ||
+            hasBalanceExceededValue
+          }
           className={styles.exchangeAction}
           onClick={handleExchangeAction}
         > {CONFIGS.APP.TRANSLATIONS?.EXCHANGE_ACTION} </button>
+
+        {hasPollingFailed && <p className={styles.rateError}> {CONFIGS.APP.TRANSLATIONS?.RATE_ERROR} </p>}
       </CurrencySelection>
     </>
   );

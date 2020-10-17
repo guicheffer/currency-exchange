@@ -3,10 +3,9 @@ import CONFIGS, { Env } from "../../../app/configs";
 
 const { NODE_ENV = 'production' }: { NODE_ENV: Env } = process.env;
 export const API_URL = CONFIGS.APP.API_URLS.proxyApi[NODE_ENV] as string;
+const defaultCurrency = CONFIGS.APP.DEFAULT_CURRENCY['from'].iso;
 
-export const fetchForexRates = async (
-  base: CurrencySchema['iso'] = CONFIGS.APP.DEFAULT_CURRENCY['from'].iso,
-) => {
+export const fetchForexRates = async (base: CurrencySchema['iso'] = defaultCurrency) => {
   const url = `${API_URL}${base}`;
 
   try {

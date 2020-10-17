@@ -11,3 +11,6 @@ $green: #2cab3d;
 $_disabled-color: $gray;
 $_secondary-color: $light-gray;
 $_loading-disabled-color: $strong-gray;
+
+// I know, these variables above could be extracted to root variables
+// instead to improve performance on compilation

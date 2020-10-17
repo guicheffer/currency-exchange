@@ -59,6 +59,7 @@ router.get('/:currency?(/)?', async (ctx) => {
   const { currency: rawCurrency = DEFAULTS.currency } = ctx.params;
   const selectedCurrency = rawCurrency.toUpperCase();
 
+  // Keep in mind these rates are from a week before! – I know, it's a bit hacky so I can display it every second =)
   await fetch(`${DEFAULTS.proxyUrl}${selectedCurrency}`)
     .then((res: { json: Function }) => res.json())
     .then(({ base, rates: serverCurrencies }: LatestCurrencies) => {

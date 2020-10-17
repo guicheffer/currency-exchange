@@ -15,6 +15,7 @@ import { getAmountFrom, getMinimumAmountToExchange, getAmountTo } from '../../..
 import { getBalanceExceeded } from '../../../store/balances/balances.selectors';
 import { setActiveSelectionTypeExchange } from '../../../store/exchange/exchange.slices';
 import { getActiveSelectionType, getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
+import { isPollingFailed } from '../../../store/polling/polling.selectors';
 import { maskAmountValue, removeMaskFromInputValue } from '../../../commons/utils/format-amount/format-amount';
 import CONFIGS from '../../../app/configs';
 import hasCharInValuePositionBeforeLength from '../../../commons/utils/has-char-in-value-position/has-char-in-value-position';
@@ -38,6 +39,7 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
 
   const hasBalanceExceededValue = useSelector(getBalanceExceeded);
   const hasMinimumAmountValue = useSelector(getMinimumAmountToExchange);
+  const hasPollingFailed = useSelector(isPollingFailed);
 
   // This will make a auto focus in case one of the currencies selection change
   const amountFromInput = useRef<HTMLInputElement>(null);
@@ -109,6 +111,7 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
         placeholder='0'
         type='tel'
         inputMode='decimal'
+        disabled={hasPollingFailed}
         ref={activeSelectionType === type ? amountFromInput : null}
         autoFocus={activeSelectionType === type}
         maxLength={Number.MAX_SAFE_INTEGER.toString().length}

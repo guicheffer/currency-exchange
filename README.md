@@ -4,7 +4,7 @@ This is a mini app playground to display currency exchange in React + Redux + Re
 
 - [The Demo version here](http://currency-exchange.guicheffer.me/)
 - [The Proxy Api](http://currency-exchange-api.guicheffer.me/)
-- [The Real Fake Dummy Weird Api](http://currency-exchange-fake-api.guicheffer.me/BTC)
+- [The Real Fake Dummy Weird Api](http://currency-exchange-fake-api.guicheffer.me/BTC) (keep in mind these rates are from a week before)
 
 <!-- TODO: Insert .gif here -->
 
@@ -14,15 +14,20 @@ In the project directory, you might run:
 
 ### `make start`
 
+It also correctly bundles React in production mode and optimizes the build for the best performance and extract it to the `build` folder and start the application.
+
+### `make dev`
+
+**ps**. Remember you can also use production's URL directly [here](http://currency-exchange.guicheffer.me/).
+
 Runs the app in the development mode. 🔥<br />
 Make sure you manually open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-### `make production` || `make serve`
+**Note**: You'll also need to run `make api` in order to get the API running in development.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `make api`
 
-**ps**. Remember you can also use production's URL directly [here](http://currency-exchange.guicheffer.me/).
+Run the API and let it up for development tests.
 
 ### `make test-stuff`
 
@@ -50,7 +55,8 @@ Please execute that in order to be aware of what commands you might be able to r
   - This application is not very acessible since I did not want to spend a lot of time improving it since I assumed my architecture skills should be taken into account more than reckon with accessibility related stuff.
 - [ ] **Architectural** <br/>
   - Many things here could have been improved such as folder structures, api calls, error handling, logs, etc;
-  - I think we should review peer dependencies on packages.json - we could use some sort of `Dependabot` in order to make it able to recognize security updates (even GitHub) could do that for us.
+  - I think we should review peer dependencies on packages.json - we could use some sort of `Dependabot` in order to make it able to recognize security updates (even GitHub) could do that for us;
+  - Design system could be a extracted package on its own since there are many ways of setting colors and variables across the styles (app level);
 - [ ] **Performance** <br/>
   I believe there's a lot of space for performance here
 - [ ] **Reusable Code** <br/>

@@ -56,6 +56,7 @@ export function OptionsNavigator() {
         onClick={handleSwitch}
         className={styles.switchAction}
         title={CONFIGS.APP.TRANSLATIONS?.SWITCH_HELP_TEXT}
+        data-disabled={hasPollingLoading}
       > {CONFIGS.APP.TRANSLATIONS?.SWITCH_TEXT_SYMBOL} </button>
 
       <div className={styles.currentRateInfo} data-disabled={hasPollingLoading}>

@@ -6,7 +6,7 @@ import exchangeSlice from './exchange/exchange.slices';
 import pollingSlices from './polling/polling.slices';
 import ratesSlice from './exchange/rates/rates.slices';
 
-import { sagaMiddleware, pollWatcher } from "./polling/middlewares/sagas";
+import { sagaMiddleware, pollingWatcher } from "./polling/middlewares/polling-sagas";
 
 export const store = configureStore({
   reducer: {
@@ -20,7 +20,7 @@ export const store = configureStore({
 });
 
 // @ts-ignore as it does not take saga types (I preferred to skip it for now)
-sagaMiddleware.run(pollWatcher);
+sagaMiddleware.run(pollingWatcher);
 
 export type RootState = ReturnType<typeof store.getState>;
 
