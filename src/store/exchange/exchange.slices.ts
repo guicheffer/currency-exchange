@@ -29,7 +29,7 @@ export const exchangeSlice = createSlice({
       state.currency.to = state.currency.from;
       state.currency.from = currencyTo;
     },
-    setActiveExchange: (state, action: PayloadAction<CurrencySelectionType>) => {
+    setActiveSelectionTypeExchange: (state, action: PayloadAction<CurrencySelectionType>) => {
       state.active = action.payload;
     },
     setCurrencyActiveFrom: (state, action: PayloadAction<CurrencySchema['iso']>) => {
@@ -44,7 +44,7 @@ export const exchangeSlice = createSlice({
 
 export const {
   reverseCurrencies,
-  setActiveExchange,
+  setActiveSelectionTypeExchange,
   setCurrencyActiveFrom,
   setCurrencyActiveTo,
 } = exchangeSlice.actions;

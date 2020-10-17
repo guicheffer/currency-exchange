@@ -1,9 +1,13 @@
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
+import * as cors from '@koa/cors';
 import fetch from 'node-fetch';
 
 import { getRandomArbitrary } from '../utils/random-arbitrary/random-arbitrary';
 import CURRENCIES from '../../src/app/currencies';
+
+// This is also something I'm not a big fan of but I didn't want to postpone the test delivery anymore :(
+import CONFIGS from '../../src/app/configs';
 
 const app = new Koa();
 const router = new Router();
@@ -22,6 +26,7 @@ const router = new Router();
  *
  * At the end of the day, this will emulate the idea of bringing different values every second.
  *
+ * I'll leave here for ease, this should NEVER be done in a real world system.
  * Haha, once again, sorry for that! :(
  *
  */
@@ -44,10 +49,10 @@ const DEFAULTS = {
 
   // These will randomize based on its min/maximum passed value
   minRandomNumber: 0.999,
-  maxRandomNumber: 1.009,
+  maxRandomNumber: 1.019,
 
   // Proxy URL for final URL (free one which is close-to-day rate)
-  proxyUrl: "http://currency-exchange-fake-api.guicheffer.me/",
+  proxyUrl: CONFIGS.APP.API_URLS.fakeApi,
 };
 
 router.get('/:currency?(/)?', async (ctx) => {
@@ -74,8 +79,10 @@ router.get('/:currency?(/)?', async (ctx) => {
     });
 });
 
+app.use(cors());
 app.use(router.routes());
 
 const { API_PORT } = process.env;
 app.listen(API_PORT);
+
 console.log(`🔥 Server running on port ${API_PORT}`);

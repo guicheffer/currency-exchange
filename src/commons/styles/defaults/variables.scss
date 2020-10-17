@@ -2,6 +2,7 @@
 $white: #FFF;
 $black: #000;
 $gray: #777;
+$strong-gray: #352e2e;
 $light-gray: #c1c1c1;
 $red: #d04b5d;
 $green: #2cab3d;
@@ -9,3 +10,4 @@ $green: #2cab3d;
 // Specific colors
 $_disabled-color: $gray;
 $_secondary-color: $light-gray;
+$_loading-disabled-color: $strong-gray;

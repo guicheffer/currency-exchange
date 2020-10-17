@@ -5,8 +5,10 @@ import { beautifyCurrentRate, getLastTwoDigits } from '../../../commons/utils/di
 import { getAmountFrom, getAmountTo } from '../../../store/amounts/amounts.selectors';
 import { getCurrentRate } from '../../../store/exchange/rates/rates.selectors';
 import { getActiveSelectionType, getExchangeIsoActiveFrom, getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
-import { reverseCurrencies, setActiveExchange } from '../../../store/exchange/exchange.slices';
+import { isPollingLoading } from '../../../store/polling/polling.selectors';
+import { reverseCurrencies, setActiveSelectionTypeExchange } from '../../../store/exchange/exchange.slices';
 import { setAmountFrom, setAmountTo } from '../../../store/amounts/amounts.slices';
+import { setPollingStarted, setPollingStopped } from '../../../store/polling/polling.slices';
 import CONFIGS from '../../../app/configs';
 import styles from '../CurrencyTo.module.scss';
 
@@ -19,6 +21,7 @@ export function OptionsNavigator() {
   const currencyBase = useSelector(getExchangeIsoActiveFrom);
   const currencyTo = useSelector(getExchangeIsoActiveTo);
   const currentRate = useSelector(getCurrentRate);
+  const hasPollingLoading = useSelector(isPollingLoading);
 
   const activeSelectionType = useSelector(getActiveSelectionType);
   const isActiveTypeFrom = useMemo(() => activeSelectionType === 'from', [activeSelectionType]);
@@ -31,18 +34,19 @@ export function OptionsNavigator() {
   const amountTo = useSelector(selectGetToAmountValue);
 
   const handleSwitch = useCallback(() => {
+    dispatch(setPollingStopped());
     dispatch(reverseCurrencies());
-    dispatch(setActiveExchange(oppositeSelectionType));
+    dispatch(setActiveSelectionTypeExchange(oppositeSelectionType));
     dispatch(isActiveTypeFrom ? setAmountTo(amountFrom) : setAmountFrom(amountTo));
-  }, [amountFrom, amountTo, dispatch, isActiveTypeFrom, oppositeSelectionType]);
+    dispatch(setPollingStarted(currencyTo));
+  }, [amountFrom, amountTo, currencyTo, dispatch, isActiveTypeFrom, oppositeSelectionType]);
 
-  // This will display the correct rate info (e.g. "£ 1 = € 1.17")
   const rateTextInfoItems = [
     /*  £   */  CONFIGS.APP.CURRENCIES[currencyBase].symbol,
     /*  1   */  CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_BASE_AMOUNT,
     /*  =   */  CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_COMPARISON_SYMBOL,
     /*  €   */  CONFIGS.APP.CURRENCIES[currencyTo].symbol,
-    /* 1.29 */  beautifyCurrentRate(currentRate),
+    /* 1.19 */  beautifyCurrentRate(currentRate),
   ];
 
   return (
@@ -54,7 +58,7 @@ export function OptionsNavigator() {
         title={CONFIGS.APP.TRANSLATIONS?.SWITCH_HELP_TEXT}
       > {CONFIGS.APP.TRANSLATIONS?.SWITCH_TEXT_SYMBOL} </button>
 
-      <div className={styles.currentRateInfo}>
+      <div className={styles.currentRateInfo} data-disabled={hasPollingLoading}>
         <span className={styles.rateSymbol}> {CONFIGS.APP.TRANSLATIONS?.RATE_TEXT_SYMBOL} </span>
 
         {/* Current Rate based on the current base currency */}

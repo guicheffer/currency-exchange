@@ -6,5 +6,5 @@ import { RootState } from '../../store';
 export const getCurrentRate = createSelector(
   (state: RootState) => state,
   (state) => getExchangeIsoActiveTo(state),
-  (state, currency) => state.rates[currency],
+  (state, currency) => state.rates.forex[currency],
 );

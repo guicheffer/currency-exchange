@@ -1,40 +1,50 @@
 import { CurrencySelectionType } from '../store/amounts/amounts.slices';
-import CURRENCIES, { DefaultCurrenciesInterface, CurrencySchema } from './currencies';
-import TRANSLATIONS, { DefaultTranslationsInterface } from './translations';
+import API_URLS, { DefaultApiUrlsType } from './api-urls';
+import CURRENCIES, { DefaultCurrenciesType, CurrencySchema } from './currencies';
+import TRANSLATIONS, { DefaultTranslationsType } from './translations';
+
+export type Env = 'development' | 'test' | 'production';
 
 interface ConfigsInterface {
   APP: {
-    CURRENCIES: DefaultCurrenciesInterface,
+    CURRENCIES: DefaultCurrenciesType;
+    API_URLS: DefaultApiUrlsType;
+    TRANSLATIONS?: DefaultTranslationsType;
+
+    LOCALE_STRING: string;
     DEFAULT_CURRENCY: {
       [key in CurrencySelectionType]: CurrencySchema;
-    },
-    LOCALE_STRING: string;
-    TRANSLATIONS?: DefaultTranslationsInterface,
+    };
+
     AMOUNT: {
       SYMBOLS: {
         [key in CurrencySelectionType]: string;
-      },
-    },
-    MAX_FRACTION_DIGITS: number,
-    MAX_FRACTION_DIGITS_BTC: number,
-    MIN_FRACTION_DIGITS: number,
-    TWO_LAST_DIGITS_FRACTION: number,
-    TIMEOUT_JUST_EXCHANGED: number,
+      };
+    };
+    MAX_FRACTION_DIGITS: number;
+    MAX_FRACTION_DIGITS_BTC: number;
+    MIN_FRACTION_DIGITS: number;
+    POLLING_DURATION: number;
+    TWO_LAST_DIGITS_FRACTION: number;
+    TIMEOUT_JUST_EXCHANGED: number;
   },
   KEYCODES: {
-    [key: string]: number,
+    [key: string]: number;
   },
 }
 
 const CONFIGS = {
   APP: {
+    API_URLS,
     CURRENCIES,
+    TRANSLATIONS,
+
+    LOCALE_STRING: 'de-DE',
     DEFAULT_CURRENCY: {
       from: CURRENCIES.gbp,
       to: CURRENCIES.eur,
     },
-    LOCALE_STRING: 'de-DE',
-    TRANSLATIONS,
+
     AMOUNT: {
       SYMBOLS: {
         from: '-',
@@ -45,6 +55,7 @@ const CONFIGS = {
     MAX_FRACTION_DIGITS: 2,
     MAX_FRACTION_DIGITS_BTC: 8,
     MIN_FRACTION_DIGITS: 0,
+    POLLING_DURATION: 1000,
     TWO_LAST_DIGITS_FRACTION: 4,
 
     // Timeout for helping exchange action to hide its last triggered action state

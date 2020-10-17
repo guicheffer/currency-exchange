@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import React, { FunctionComponent, ReactElement, useMemo } from 'react';
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo } from 'react';
 
 import { AmountInput } from './containers/AmountInput';
 import { BalanceDisplay } from './containers/BalanceDisplay';
@@ -7,6 +7,7 @@ import { BalanceDisplay } from './containers/BalanceDisplay';
 import { CurrencySchema } from '../../app/currencies';
 import { CurrencySelectionType } from '../../store/amounts/amounts.slices';
 import { reverseCurrencies } from '../../store/exchange/exchange.slices';
+import { setPollingStarted, setPollingStopped } from '../../store/polling/polling.slices';
 import CONFIGS from '../../app/configs';
 import styles from './CurrencySelection.module.scss';
 
@@ -29,21 +30,38 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({ c
 
   const dispatch = useDispatch();
 
+  // This will start polling on the first rendering
+  // **ps**. this will also ignore eslint since it takes `dispatch` as modifiers only
+  // eslint-disable-next-line
+  useEffect(() => { dispatch(setPollingStarted(activeCurrency)) }, [dispatch]);
+
   const isSelectionTypeFrom = useMemo(() => type === 'from', [type]);
 
-  const handleSelection = (event: React.SyntheticEvent<HTMLSelectElement>) => {
+  const handleSelection = useCallback((event: React.SyntheticEvent<HTMLSelectElement>) => {
     const selectedCurrency = event.currentTarget.value;
+    const isCurrencyReversing = convertCurrency === selectedCurrency;
 
-    // TODO: Dispatch polling from `amountFrom` as the `base` currency for our rates
+    // We'll change it's polling base only if:
+    // - `currency` is reversing (when user selects the same customer or vice-versa);
+    // - `from` currency is changed;
+    if (isCurrencyReversing || isSelectionTypeFrom) {
+      dispatch(setPollingStopped());
+
+      if (isCurrencyReversing && !isSelectionTypeFrom) {
+        dispatch(setPollingStarted(activeCurrency))
+      } else {
+        dispatch(setPollingStarted(selectedCurrency))
+      }
+    }
 
     // If selected currency is the same as the one to convert, invert them;
     // Otherwise , change its active currency to the one selected.
-    if (convertCurrency === selectedCurrency) {
+    if (isCurrencyReversing) {
       dispatch(reverseCurrencies());
     } else {
       dispatch(changeActiveCurrency(selectedCurrency));
     }
-  };
+  }, [activeCurrency, changeActiveCurrency, convertCurrency, dispatch, isSelectionTypeFrom]);
 
   return (
     <section className={`${styles.row} currency-exchange-section currency-exchange-section--${type}`}>

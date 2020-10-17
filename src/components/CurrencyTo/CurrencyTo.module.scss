@@ -30,10 +30,15 @@ $_nav_bubble_size: 4vh;
 
 .currentRateInfo,
 .switchAction {
-  background: $white;
+  background-color: $white;
   color: var(--app-primary-color);
   position: absolute;
   z-index: 1;
+
+  &[data-disabled=true] {
+    color: $gray;
+    opacity: 0.4;
+  }
 }
 
 .switchAction {

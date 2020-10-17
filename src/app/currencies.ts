@@ -5,7 +5,7 @@ export type CurrencySchema = {
   minimum: number;
 }
 
-export type DefaultCurrenciesInterface = {
+export type DefaultCurrenciesType = {
   [key in string]: CurrencySchema;
 }
 
@@ -34,4 +34,4 @@ export default {
     symbol: '$',
     minimum: 100,
   },
-} as DefaultCurrenciesInterface;
+} as DefaultCurrenciesType;

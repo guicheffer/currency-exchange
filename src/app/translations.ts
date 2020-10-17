@@ -1,4 +1,4 @@
-export type DefaultTranslationsInterface = {
+export type DefaultTranslationsType = {
   [key: string]: string;
 }
 
@@ -14,4 +14,4 @@ export default {
   RATE_TEXT_SYMBOL: '↗',
   SWITCH_HELP_TEXT: 'Switch currencies',
   SWITCH_TEXT_SYMBOL: '↕',
-} as DefaultTranslationsInterface;
+} as DefaultTranslationsType;

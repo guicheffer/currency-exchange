@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CurrencySelectionType, defaultAmountState, setAmountValue } from '../../../store/amounts/amounts.slices';
 import { getAmountFrom, getMinimumAmountToExchange, getAmountTo } from '../../../store/amounts/amounts.selectors';
 import { getBalanceExceeded } from '../../../store/balances/balances.selectors';
-import { setActiveExchange } from '../../../store/exchange/exchange.slices';
+import { setActiveSelectionTypeExchange } from '../../../store/exchange/exchange.slices';
 import { getActiveSelectionType, getExchangeIsoActiveFrom,getExchangeIsoActiveTo } from '../../../store/exchange/exchange.selectors';
 import { maskAmountValue, removeMaskFromInputValue } from '../../../commons/utils/format-amount/format-amount';
 import CONFIGS from '../../../app/configs';
@@ -44,7 +44,7 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
   useEffect(() => amountFromInput.current?.focus(), [currencyBase, currencyTo]);
 
   const handleFocus = useCallback((): void => {
-    dispatch(setActiveExchange(type));
+    dispatch(setActiveSelectionTypeExchange(type));
     dispatch(setAmountValue[type](currentAmount));
     dispatch(setAmountValue[oppositeSelectionType](defaultAmountState));
   }, [currentAmount, dispatch, oppositeSelectionType, type]);
@@ -72,9 +72,12 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
   const handleKeyPress = useCallback((event: KeyboardEvent<HTMLInputElement>): void => {
     const amountValue = event.currentTarget.value;
 
-    const pressedKeyString = String.fromCharCode(event.which);
-    const permittedValueRegex = /^[\d|.| |+|-]+?(?=(,\d{0,1}$)|$)/;
     const allowedKeysRegex = /\d|,/;
+    const pressedKeyString = String.fromCharCode(event.which);
+
+    // Unfortunately, BTC will respect its mask and it always display as Zero "0" :/
+    // Of course we could improve the logic around that in order to display it correctly!
+    const permittedValueRegex = /^[\d|.| |+|-]+?(?=(,\d{0,1}$)|$)/;
 
     /*
      * The following conditions will, respectively:
@@ -103,13 +106,13 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
   return (
     <>
       <input
+        placeholder='0'
         type='tel'
-        ref={activeSelectionType === type ? amountFromInput : null}
         inputMode='decimal'
+        ref={activeSelectionType === type ? amountFromInput : null}
         autoFocus={activeSelectionType === type}
         maxLength={Number.MAX_SAFE_INTEGER.toString().length}
         className={`${styles.amount} ${isSelectionTypeFrom && (hasBalanceExceededValue || !hasMinimumAmountValue) ? styles.amount__balanceExceeded : ''}`}
-        placeholder='0'
         onFocus={handleFocus}
         onChange={handleAmountChange}
         onKeyPress={handleKeyPress}

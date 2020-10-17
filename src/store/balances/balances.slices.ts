@@ -23,6 +23,16 @@ export const balancesSlice = createSlice({
   name: 'balances',
   initialState,
   reducers: {
+    /**
+     * Ideally, exchage would call an API to update user's balance, for sure.
+     *
+     * I'll keep everything here since it's related to balance – for a short-term,
+     * solution I could also create that in a middleware but preferred to keep it simple;
+     *
+     * Honestly, Redux middleware is more used for logging, crash reporting,
+     * talking to an asynchronous API, routing, and more.
+     */
+
     decrementBalance: (state, action: PayloadAction<BalanceExchange>) => {
       const { currency, value } = action.payload;
       state[currency] -= value;
