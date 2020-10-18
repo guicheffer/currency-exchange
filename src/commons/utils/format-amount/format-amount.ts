@@ -8,7 +8,7 @@ const CONFIGS_MAX_FRACTION_DIGITS = CONFIGS.APP.MAX_FRACTION_DIGITS;
 const CONFIGS_MIN_FRACTION_DIGITS = CONFIGS.APP.MIN_FRACTION_DIGITS;
 const CONFIGS_MAX_FRACTION_DIGITS_BTC = CONFIGS.APP.MAX_FRACTION_DIGITS_BTC;
 
-export const formatAmount = (amountValue: number, currency?: CurrencySchema['iso'] ) => {
+export const formatAmount = (amountValue: number, currency?: CurrencySchema['key'] ) => {
   // This will rely on users' native language when currency is passed (for balance purposes)
   // Likewise, for users' input on the amount value, format will remain the same
   const locale = currency ? navigator.language : CONFIGS.APP.LOCALE_STRING;
@@ -33,9 +33,6 @@ export const formatAmount = (amountValue: number, currency?: CurrencySchema['iso
 export const maskAmountValue = ({ value, options = {} }: AmountSet, type: CurrencySelectionType) => {
   if (value === null || Number.isNaN(value)) return '';
 
-  const symbolPrefix = value !== null ? `${CONFIGS.APP.AMOUNT.SYMBOLS[type]} ` : '';
-  const formattedAmount = formatAmount(value);
-
   const { hasDecimalsStarted, hasTrailingZero, hasZeroRightAfterComma } = options;
 
   let requiredSuffix = '';
@@ -43,7 +40,9 @@ export const maskAmountValue = ({ value, options = {} }: AmountSet, type: Curren
   requiredSuffix += hasTrailingZero ? '0' : '';
   requiredSuffix += hasZeroRightAfterComma ? ',0' : '';
 
-  return `${symbolPrefix}${formattedAmount}${requiredSuffix}`;
+  const formattedAmount = formatAmount(value);
+  const operationSymbolPrefix = value !== null ? `${CONFIGS.APP.AMOUNT.SYMBOLS[type]} ` : '';
+  return `${operationSymbolPrefix}${formattedAmount}${requiredSuffix}`;
 }
 
 export const removeMaskFromInputValue = (rawValue: string) => rawValue.trim().replace(/(\+|-|\.| )/g, '').replace(/,/, '.');
