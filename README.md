@@ -108,9 +108,10 @@ ___
 
 There's no _codacy_-like for displaying coverage results so I decided to paste here the screenshot directly.
 
-**Note**: run `make test-coverage` in order to generate coverage around the tests.
+**Note.1**: run `make test-coverage` in order to generate coverage around the tests.
+**Note.2**: this is eventually testing our integration and unit tests around the application.
 
-<!-- TODO: Insert here percentage of coverage -->
+![test coverage screenshot](./docs/coverage-percentage.png)
 
 ## Ideas
 
@@ -123,8 +124,12 @@ There's no _codacy_-like for displaying coverage results so I decided to paste h
   - Many things here could have been improved such as folder structures, api calls, error handling, logs, etc;
   - I think we should review peer dependencies on packages.json - we could use some sort of `Dependabot` in order to make it able to recognize security updates (even GitHub) could do that for us;
   - Design system could be a extracted package on its own since there are many ways of setting colors and variables across the styles (app level);
-  - Tests
+  - Integration tests
     - There's a lot of space for improving tests and, of course, improving the concept of TDD (which was not applied during the development of this app);
+  - Unit tests
+    - I ended up not adding tests to the slices since they are part of the "up and running" state of our integration tests "[CurrencySelection.test.tsx](./src/components/CurrencySelection/__tests__/CurrencySelection.test.tsx)" which is eventually our happy path execution;
+  - Api-like tests
+    - I haven't added many but at least the part where I randomize data for our fake api
 - [ ] **Performance** <br/>
   I believe there's a lot of space for performance here
 - [ ] **Reusable Code** <br/>

@@ -7,7 +7,7 @@ import { RootState } from '../store';
 
 export const getCurrencyBalance = createSelector(
   (state: RootState) => state,
-  (_: any, currency: CurrencySchema['iso']) => currency,
+  (_: any, currency: CurrencySchema['key']) => currency,
   (state, currency) => state.balances[currency],
 );
 

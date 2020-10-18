@@ -1,7 +1,7 @@
 export default {
   amounts: {
     from: {
-      value: null,
+      value: 15,
     },
     to: {
       value: null,

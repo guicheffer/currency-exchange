@@ -13,8 +13,10 @@ export const store = configureStore({
     amounts: amountsSlice,
     balances: balancesSlice,
     exchange: exchangeSlice,
-    polling: pollingSlices,
     rates: ratesSlice,
+
+    // This will be essentially for handling UI errors around the app
+    polling: pollingSlices,
   },
   middleware: [sagaMiddleware, ...getDefaultMiddleware()],
 });
