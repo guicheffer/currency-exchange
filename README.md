@@ -8,11 +8,12 @@ This is a mini app playground to display currency exchange in React + Redux + Re
 
 ## Summary
 
+- [Demo](http://currency-exchange.guicheffer.me/)
 - [Quick preview](#quick-preview)
 - [Requirements](#requirements)
 - [Available Scripts](#available-scripts)
 - [Preview *(screenshots)*](#preview)
-- [Coverage](#coverage)
+- [Tests Coverage](#tests-coverage)
 - [Ideas](#ideas)
 - [Learn more](#learn-more)
 
@@ -64,7 +65,7 @@ Please execute that in order to be aware of what commands you might be able to r
 
 ## Preview
 
-## Warnings messages
+### Warnings messages
 
 #### 📷 &nbsp; Minimum amount
 ![minimum amount message](./docs/minimum.png)
@@ -74,7 +75,7 @@ Please execute that in order to be aware of what commands you might be able to r
 
 ___
 
-## Forex rates updates
+### Forex rates updates
 
 This happens every 1s even though it could be techinically problematic
 
@@ -102,13 +103,13 @@ Failures also display UI error handler messages
 
 ___
 
-## Coverage
+## Tests Coverage
 
 #### 📷 &nbsp; Screenshot of percentage
 
 There's no _codacy_-like for displaying coverage results so I decided to paste here the screenshot directly.
 
-**Note.1**: run `make test-coverage` in order to generate coverage around the tests.
+**Note.1**: run `make test-coverage` in order to generate coverage around the tests. <br/>
 **Note.2**: this is eventually testing our integration and unit tests around the application.
 
 ![test coverage screenshot](./docs/coverage-percentage.png)
