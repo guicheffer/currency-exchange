@@ -61,6 +61,7 @@ export function CurrencyTo() {
       >
         <button
           type='submit'
+          data-testid='exchange-action'
           disabled={
             !amountFromValue ||
             !hasMinimumAmountValue ||

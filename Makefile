@@ -38,3 +38,6 @@ production: prod
 test: test-stuff
 test-stuff: ## test stuff
 	$(PKG) test
+
+test-coverage: ## test stuff and it generates coverage afterwards
+	$(PKG) test:coverage

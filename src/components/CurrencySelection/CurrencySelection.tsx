@@ -75,7 +75,7 @@ export const CurrencySelection: FunctionComponent<CurrencySelectionProps> = ({ c
             {
               Object.entries(CONFIGS.APP.CURRENCIES).map(
                 ([currencyIndexKey, { iso, key }]) => {
-                  return <option key={currencyIndexKey} value={key}>{iso}</option>;
+                  return <option data-testid={`currency-${key}`} key={currencyIndexKey} value={key}>{iso}</option>;
                 }
               )
             }

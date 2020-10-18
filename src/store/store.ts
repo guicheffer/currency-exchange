@@ -6,7 +6,7 @@ import exchangeSlice from './exchange/exchange.slices';
 import pollingSlices from './polling/polling.slices';
 import ratesSlice from './exchange/rates/rates.slices';
 
-import { sagaMiddleware, pollingWatcher } from "./polling/middlewares/polling-sagas";
+import { sagaMiddleware, pollingWatcher } from './polling/middlewares/polling-sagas';
 
 export const store = configureStore({
   reducer: {

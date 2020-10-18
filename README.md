@@ -2,21 +2,28 @@
 
 This is a mini app playground to display currency exchange in React + Redux + Redux-Saga and TypeScript.
 
-- [The Demo version here](http://currency-exchange.guicheffer.me/)
+- [The **Demo version** here](http://currency-exchange.guicheffer.me/)
 - [The Proxy Api](http://currency-exchange-api.guicheffer.me/)
-- [The Real Fake Dummy Weird Api](http://currency-exchange-fake-api.guicheffer.me/BTC) (keep in mind these rates are from a week before)
+- [The Real Fake Dummy Weird Api](http://currency-exchange-fake-api.guicheffer.me/BTC) _(keep in mind these rates are from a week before)_
 
 ## Summary
 
 - [Quick preview](#quick-preview)
+- [Requirements](#requirements)
 - [Available Scripts](#available-scripts)
 - [Preview *(screenshots)*](#preview)
+- [Coverage](#coverage)
 - [Ideas](#ideas)
 - [Learn more](#learn-more)
 
 ## Quick preview
 
 ![how app works](./docs/currency-exchange.gif)
+
+## Requirements
+
+- _Node_ = `14.*`
+- _Yarn_ = `1.*`
 
 ## Available Scripts
 
@@ -42,6 +49,10 @@ Run the API and let it up for development tests.
 ### `make test-stuff`
 
 Launches the test runner in the interactive watch mode.
+
+#### `make test-coverage`
+
+This will generate a coverage folder with more details to be exported afterwards.
 
 ### `make i` | `make install`
 
@@ -91,6 +102,16 @@ Failures also display UI error handler messages
 
 ___
 
+## Coverage
+
+#### 📷 &nbsp; Screenshot of percentage
+
+There's no _codacy_-like for displaying coverage results so I decided to paste here the screenshot directly.
+
+**Note**: run `make test-coverage` in order to generate coverage around the tests.
+
+<!-- TODO: Insert here percentage of coverage -->
+
 ## Ideas
 
 - [ ] **UX** <br/>
@@ -102,6 +123,8 @@ ___
   - Many things here could have been improved such as folder structures, api calls, error handling, logs, etc;
   - I think we should review peer dependencies on packages.json - we could use some sort of `Dependabot` in order to make it able to recognize security updates (even GitHub) could do that for us;
   - Design system could be a extracted package on its own since there are many ways of setting colors and variables across the styles (app level);
+  - Tests
+    - There's a lot of space for improving tests and, of course, improving the concept of TDD (which was not applied during the development of this app);
 - [ ] **Performance** <br/>
   I believe there's a lot of space for performance here
 - [ ] **Reusable Code** <br/>

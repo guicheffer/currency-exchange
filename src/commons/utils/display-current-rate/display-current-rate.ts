@@ -1,5 +1,5 @@
-import CONFIGS from "../../../app/configs";
-import roundDown from "../round-down/round-down";
+import CONFIGS from '../../../app/configs';
+import roundDown from '../round-down/round-down';
 
 const beautifyCurrentRate = (rate: number) => {
   const rateRoundedDown = roundDown(rate);

@@ -33,21 +33,21 @@ export const BalanceDisplay: FunctionComponent<BalanceDisplayProps> = ({
 
   return (
     <section className={styles.display}>
-      <p className={`${styles.balance} ${!isSelectionTypeFrom && justExchanged ? styles.balanceJustExchanged : ''}`}>
+      <p className={`${styles.balance} ${!isSelectionTypeFrom && justExchanged ? styles.balanceJustExchanged : ''}`} data-testid={`balance-${type}`}>
         {CONFIGS.APP.TRANSLATIONS?.BALANCE}: {formatAmount(currencyBalance, currency)}
       </p>
-
-      {/* This will display a "balance exceeded" info when amount value */}
-      {
-        isSelectionTypeFrom && hasBalanceExceededValue && <p> {CONFIGS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
-      }
 
       {/* This will display a "minimum amount is..." warning */}
       {
         isSelectionTypeFrom && !hasMinimumAmountValue &&
-        <p className={`${styles.warning}`}>
+        <p className={`${styles.warning}`} data-testid='minimum-required'>
           {CONFIGS.APP.TRANSLATIONS?.MINIMUM_EXPECTED} {formatAmount(CONFIGS.APP.CURRENCIES[currency].minimum, currency)}
         </p>
+      }
+
+      {/* This will display a "balance exceeded" info when amount value */}
+      {
+        isSelectionTypeFrom && hasBalanceExceededValue && <p data-testid='balance-exceeds'> {CONFIGS.APP.TRANSLATIONS?.BALANCE_EXCEEDED} </p>
       }
     </section>
   );

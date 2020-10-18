@@ -5,12 +5,15 @@ import React from 'react';
 import { store } from '../../store/store';
 import CurrencyExchangeApp from './MainApp';
 
-test('renders learn react link', () => {
-  const { getByText } = render(
-    <Provider store={store}>
-      <CurrencyExchangeApp />
-    </Provider>
-  );
+describe('MainApp', () => {
+  it('renders main currency app container', () => {
+    const { getByTestId, getByText } = render(
+      <Provider store={store}>
+        <CurrencyExchangeApp />
+      </Provider>
+    );
 
-  expect(getByText(/learn/i)).toBeInTheDocument();
+    expect(getByTestId('main-app')).toBeTruthy();
+    expect(getByText(/exchange/i)).toBeInTheDocument();
+  });
 });

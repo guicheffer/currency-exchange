@@ -1,4 +1,4 @@
-import { Env } from "./configs";
+import { Env } from './configs';
 
 export type DefaultApiUrlsType = {
   [key in string | Env]: any | Env | string | DefaultApiUrlsType;

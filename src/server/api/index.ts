@@ -4,10 +4,10 @@ import * as cors from '@koa/cors';
 import fetch from 'node-fetch';
 
 import { getRandomArbitrary } from '../utils/random-arbitrary/random-arbitrary';
-import CURRENCIES from '../../src/app/currencies';
+import CURRENCIES from '../../app/currencies';
 
 // This is also something I'm not a big fan of but I didn't want to postpone the test delivery anymore :(
-import CONFIGS from '../../src/app/configs';
+import CONFIGS from '../../app/configs';
 
 const app = new Koa();
 const router = new Router();

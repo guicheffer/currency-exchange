@@ -111,6 +111,7 @@ export const AmountInput: FunctionComponent<AmountInputProps> = ({ type }): Reac
         placeholder='0'
         type='tel'
         inputMode='decimal'
+        data-testid={`amount-${type}-el`}
         disabled={hasPollingFailed}
         ref={activeSelectionType === type ? amountFromInput : null}
         autoFocus={activeSelectionType === type}
