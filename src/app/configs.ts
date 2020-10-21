@@ -55,7 +55,7 @@ const CONFIGS = {
     MAX_FRACTION_DIGITS: 2,
     MAX_FRACTION_DIGITS_BTC: 8,
     MIN_FRACTION_DIGITS: 0,
-    POLLING_DURATION: 1000,
+    POLLING_DURATION: 10000, // 10 seconds
     TWO_LAST_DIGITS_FRACTION: 4,
 
     // Timeout for helping exchange action to hide its last triggered action state

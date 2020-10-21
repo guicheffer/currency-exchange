@@ -3,8 +3,8 @@
 This is a mini app playground to display currency exchange in React + Redux + Redux-Saga and TypeScript.
 
 - [The **Demo version** here](http://currency-exchange.guicheffer.me/)
-- [The Proxy Api](http://currency-exchange-api.guicheffer.me/)
 - [The Real Fake Dummy Weird Api](http://currency-exchange-fake-api.guicheffer.me/BTC) _(keep in mind these rates are from a week before)_
+- ~~[The Proxy Api](http://currency-exchange-api.guicheffer.me/)~~ (**deleted**)
 
 ## Summary
 

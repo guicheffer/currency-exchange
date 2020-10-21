@@ -6,7 +6,7 @@ export const API_URL = CONFIGS.APP.API_URLS.proxyApi[NODE_ENV] as string;
 const defaultCurrency = CONFIGS.APP.DEFAULT_CURRENCY['from'].iso;
 
 export const fetchForexRates = async (base: CurrencySchema['iso'] = defaultCurrency) => {
-  const url = `${API_URL}${base}`;
+  const url = `${API_URL}${base.toUpperCase()}`;
 
   try {
     const response = await fetch(url, { method: 'GET' });

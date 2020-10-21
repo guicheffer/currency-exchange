@@ -7,8 +7,8 @@ export type DefaultApiUrlsType = {
 export default {
   fakeApi: 'http://currency-exchange-fake-api.guicheffer.me/',
   proxyApi: {
+    // TODO: Roll this back for development reasons
     development: 'http://localhost:3001/',
-    prod: 'http://currency-exchange-api.guicheffer.me/',
-    production: 'http://currency-exchange-api.guicheffer.me/',
+    production: 'http://currency-exchange-fake-api.guicheffer.me/',
   }
 } as DefaultApiUrlsType;
