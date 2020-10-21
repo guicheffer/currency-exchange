@@ -77,7 +77,7 @@ ___
 
 ### Forex rates updates
 
-This happens every 1s even though it could be techinically problematic
+This happens every 10s even though it could be techinically problematic
 
 ![forex updated](./docs/forex-rates-updates.png)
 
